@@ -23,7 +23,7 @@ I have a limited number of Esri Developer Credits and I want to limit the number
 ###### Minimum Viable Product
 This will probably be the most time-consuming part of the program. A few references have been provided in the [Mathematics](#Mathematics) section can help in understanding the computation involved in finding the optimal solution to this problem.
 
-An optimal solution would be nice and is probably an attainable goal with the limited number of houses one will feasibly want to see while touring open houses, but even in the case where someone provides an unusual number of houses, the priority will be to find **a solution**. Optimal solutions may not be too much of a stretch from finding a solution, but for the sake of getting a minimally viable product, any solutions will be acceptable.
+An optimal solution would be nice and is probably an attainable goal with the limited number of houses one will feasibly want to see while touring open houses, but even in the case where someone provides an unusual number of houses, the priority will be to find **a solution**. For the sake of getting a minimally viable product, any solutions will be acceptable.
 
 ###### Possible Approaches
 One approach to this problem will be to first take three points, _{A, B, C}_; where _A, B,_ and _C_ are _(Latitude, Longitude)_ pairs. The directions between these point _{ab, ac, ba, bc, ca, bc}_; where directions are based off of what is returned from [Python RouteLayer object](https://developers.arcgis.com/python/guide/performing-route-analyses/#Drawing-the-result-route-on-a-web-map-as-a-layer) when two points are provided.

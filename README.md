@@ -40,7 +40,7 @@ TODO
 ## Resources
 
 ### Version Control
-* <a href="https://github.com/apjansing/open-house-router" target="_blank">apjansing/open-house-router</a>
+* <a href="https://github.com/apjansing/Open-House-Route-Planner" target="_blank">apjansing/Open-House-Route-Planner</a>
 
 ### Planning
 * <a href="https://trello.com/b/q1hinbru" target="_blank">Trello - Open House Router</a>

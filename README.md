@@ -21,7 +21,7 @@ I have a limited number of Esri Developer Credits and I want to limit the number
    
 ##### Calculation
 ###### Minimum Viable Product
-This will probably be the most time-consuming part of the program. A few references have been provided in the [Mathematics](#Mathematics) can help in understanding the computation involved in finding the optimal solution to this problem.
+This will probably be the most time-consuming part of the program. A few references have been provided in the [Mathematics](#Mathematics) section can help in understanding the computation involved in finding the optimal solution to this problem.
 
 An optimal solution would be nice and is probably an attainable goal with the limited number of houses one will feasibly want to see while touring open houses, but even in the case where someone provides an unusual number of houses, the priority will be to find **a solution**. Optimal solutions may not be too much of a stretch from finding a solution, but for the sake of getting a minimally viable product, any solutions will be acceptable.
 

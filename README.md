@@ -1,4 +1,4 @@
-# Open House Router
+# Open House Route Planner
 
 ## Inspiration
 I have been looking for houses. When I add open houses to my Google Calendar, I am able to request direction to whatever house is open next in time, but I was thinking…
@@ -43,7 +43,7 @@ TODO
 * <a href="https://github.com/apjansing/Open-House-Route-Planner" target="_blank">apjansing/Open-House-Route-Planner</a>
 
 ### Planning
-* <a href="https://trello.com/b/q1hinbru" target="_blank">Trello - Open House Router</a>
+* <a href="https://trello.com/b/q1hinbru" target="_blank">Trello - Open House Route Planner</a>
 
 ### APIs
 * <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment" target="_blank">Setting up a Node development environment</a>

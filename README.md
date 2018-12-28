@@ -18,7 +18,7 @@ I have a limited number of Esri Developer Credits and I want to limit the number
  * and before a query to Esri is made, 
    * check if a given address has already been geocoded,
    * and check if a the directions between two given points has already been fetched
-   
+
 ##### Calculation
 ###### Minimum Viable Product
 This will probably be the most time-consuming part of the program. A few references have been provided in the [Mathematics](#Mathematics) section can help in understanding the computation involved in finding the optimal solution to this problem.
@@ -31,6 +31,15 @@ One approach to this problem will be to first take three points, _{A, B, C}_; wh
 With that information I would use SparkGraph to help simulate travelling from point to point and find a path that satisfies the condition that all houses are visited during the open house time windows.
 
 _A [Traveling Salesman API call](https://developers.arcgis.com/python/guide/performing-route-analyses/#Solving-the-traveling-salesperson-problem-(TSP)) is available in the [Esri API](http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/Route_analysis/004700000045000000/) and it looks like there are enough controls to tell the program that once someone arrives at a location, they will want to stay there for some time. **This may or may not be enough to solve the problem described**._
+
+##### Technologies
+###### Databases
+ * MongoDB - for simplified storage of data during the ETL process.
+###### Frameworks
+ * Spark - More specifically, PySpark with the [mongo-spark-connector](https://docs.mongodb.com/spark-connector/master/python-api/).
+###### Support
+ * Docker - for compartmentalization of the work. In addition to making the work more portable, containers also provide a convenient way of breaking a problem down into its simplest parts.
+ * Docker-compose - to put the containers on the same network and so each container can call the others out by name.
 
 
 #### Frontend

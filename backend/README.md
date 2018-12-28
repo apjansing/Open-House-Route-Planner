@@ -21,6 +21,16 @@ With that information I would use SparkGraph to help simulate travelling from po
 
 _A [Traveling Salesman API call](https://developers.arcgis.com/python/guide/performing-route-analyses/#Solving-the-traveling-salesperson-problem-(TSP)) is available in the [Esri API](http://resources.arcgis.com/EN/HELP/MAIN/10.2/index.html#/Route_analysis/004700000045000000/) and it looks like there are enough controls to tell the program that once someone arrives at a location, they will want to stay there for some time. **This may or may not be enough to solve the problem described**._
 
+## Technologies
+### Databases
+ * MongoDB - for simplified storage of data during the ETL process.
+### Frameworks
+ * Spark - More specifically, PySpark with the [mongo-spark-connector](https://docs.mongodb.com/spark-connector/master/python-api/).
+### Support
+ * Docker - for compartmentalization of the work. In addition to making the work more portable, containers also provide a convenient way of breaking a problem down into its simplest parts.
+ * Docker-compose - to put the containers on the same network and so each container can call the others out by name.
+
+
 # Resources
 ## APIs
 * <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment" target="_blank">Setting up a Node development environment</a>

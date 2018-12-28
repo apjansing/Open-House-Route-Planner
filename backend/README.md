@@ -25,7 +25,7 @@ _A [Traveling Salesman API call](https://developers.arcgis.com/python/guide/perf
 ### Databases
  * MongoDB - for simplified storage of data during the ETL process.
 ### Frameworks
- * Spark - More specifically, PySpark with the [mongo-spark-connector](https://docs.mongodb.com/spark-connector/master/python-api/).
+ * Spark - More specifically, PySpark with the [mongo-spark-connector](https://docs.mongodb.com/spark-connector/master/python-api/) ([alternative link](https://www.mongodb.com/products/spark-connector)).
 ### Support
  * Docker - for compartmentalization of the work. In addition to making the work more portable, containers also provide a convenient way of breaking a problem down into its simplest parts.
  * Docker-compose - to put the containers on the same network and so each container can call the others out by name.

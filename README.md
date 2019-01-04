@@ -1,4 +1,4 @@
-# [Open House Route Planner](/Open-House-Route-Planner/)
+# [Open House Route Planner](https://apjansing.github.io/Open-House-Route-Planner/)
 
 ## Inspiration
 I have been looking for houses. When I add open houses to my Google Calendar, I am able to request direction to whatever house is open next in time, but I was thinking…
@@ -9,7 +9,7 @@ I have been looking for houses. When I add open houses to my Google Calendar, I 
 ### Application
 The program will allow the user enter a series of open houses and the applications will attempt to find a route that will allow the user to visit the maximum number of open houses given the constraints of travel time between locations and when the open houses are open.
 
-#### [Backend](/Open-House-Route-Planner/backend/)
+#### [Backend](https://apjansing.github.io/Open-House-Route-Planner/backend/)
 Most of my focus will be on getting the backend of this project working. My hope here is break the problem down into several manageable parts.
 
 ##### Querying
@@ -42,7 +42,7 @@ _A [Traveling Salesman API call](https://developers.arcgis.com/python/guide/perf
  * Docker-compose - to put the containers on the same network and so each container can call the others out by name.
 
 
-#### [Frontend](/Open-House-Route-Planner/frontend/)
+#### [Frontend](https://apjansing.github.io/Open-House-Route-Planner/frontend/)
 TODO
 
 

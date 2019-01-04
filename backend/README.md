@@ -1,5 +1,5 @@
-# [Open House Route Planner](/Open-House-Route-Planner/)
-## [Backend](/Open-House-Route-Planner/backend/)
+# [Open House Route Planner](https://apjansing.github.io/Open-House-Route-Planner/)
+## [Backend](https://apjansing.github.io/Open-House-Route-Planner/backend/)
 Most of my focus will be on getting the backend of this project working. My hope here is break the problem down into several manageable parts.
 
 ### Querying

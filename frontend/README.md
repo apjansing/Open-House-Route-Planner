@@ -1,5 +1,5 @@
-# [Open House Route Planner](/Open-House-Route-Planner/)
-## [Frontend](/Open-House-Route-Planner/frontend/)
+# [Open House Route Planner](https://apjansing.github.io/Open-House-Route-Planner/)
+## [Frontend](https://apjansing.github.io/Open-House-Route-Planner/frontend/)
 TODO
 
 ## Resources

@@ -42,7 +42,7 @@ _A [Traveling Salesman API call](https://developers.arcgis.com/python/guide/perf
  * Docker-compose - to put the containers on the same network and so each container can call the others out by name.
 
 
-#### Frontend
+#### [Frontend](/Open-House-Route-Planner/frontend/)
 TODO
 
 
@@ -61,7 +61,7 @@ TODO
 * <a href="https://developers.arcgis.com/" target="_blank">ArcGIS Developer</a>
 
 ### Mathematics
-I have described this problem to many people and almost everyone thinks it is just the <a href="https://www.wikiwand.com/en/Travelling\_salesman\_problem" target="_blank">Travelling Salesman Problem</a> (TSP), but I prefer to think of it as a <a href="https://www.wikiwand.com/en/Hamiltonian_path_problem" target="_blank">Hamiltonian cycle problem</a> or some form of <a href="https://www.wikiwand.com/en/Travelling_salesman_problem#/Metric_TSP" target="_blank">Metric TSP</a>.
+I have described this problem to many people and almost everyone thinks it is just the <a href="https://www.wikiwand.com/en/Travelling\_salesman\_problem" target="_blank">Traveling Salesman Problem</a> (TSP), but I prefer to think of it as a <a href="https://www.wikiwand.com/en/Hamiltonian_path_problem" target="_blank">Hamiltonian cycle problem</a> or some form of <a href="https://www.wikiwand.com/en/Travelling_salesman_problem#/Metric_TSP" target="_blank">Metric TSP</a>.
 
 ## Contributors to initial codebase
 I would like to acknowledge the initial help I received in starting this project to those listed below. I refer to their LinkedIn pages as I do not have all of their GitHub profiles available.

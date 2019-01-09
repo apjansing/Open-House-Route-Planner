@@ -3,18 +3,21 @@ services:
   mongo:
     container_name: mongo
     image: mongo:${MONGODB_TAG}
-    ports: ${MONGO_EXTERNAL}:${MONGO_INTERNAL}
+    ports: 
+      - ${MONGO_EXTERNAL}:${MONGO_INTERNAL}
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
   pyspark:
     container_name: pyspark
     image: jupyter/pyspark-notebook:${PYSPARK_TAG}
-    ports: ${MONGO_EXTERNAL}:${MONGO_INTERNAL}
+    ports: 
+      - ${PYSPARK_EXTERNAL}:${PYSPARK_INTERNAL}
   esri:
     container_name: esri
     image: esridocker/arcgis-api-python-notebook:${ESRI_TAG}
-    ports: ${ESRI_EXTERNAL}:${ESRI_INTERNAL}
+    ports: 
+      - ${ESRI_EXTERNAL}:${ESRI_INTERNAL}
 
 
 networks: 

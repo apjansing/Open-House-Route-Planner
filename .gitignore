@@ -62,3 +62,12 @@ typings/
 
 # Calendar Data
 *.ics
+
+# MongoDB
+*.wt
+journal
+mongo.lock*.bson
+*.data
+*.lock
+*.turtle
+WiredTiger*

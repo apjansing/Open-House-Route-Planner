@@ -8,6 +8,8 @@ services:
     environment: 
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+    volumes: 
+      - ./mongo/db:/data/db
   pyspark:
     container_name: pyspark
     image: jupyter/pyspark-notebook:${PYSPARK_TAG}

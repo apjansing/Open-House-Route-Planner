@@ -74,3 +74,4 @@ mongo.lock*.bson
 *.lock
 *.turtle
 WiredTiger*
+*.bson

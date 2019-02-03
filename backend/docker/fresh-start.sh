@@ -1,4 +1,9 @@
 #!/bin/bash
 
 ./docker-compose-down.sh
-./docker-compose-start.sh
+./docker-compose-up.sh
+
+./install-deps.sh
+
+docker logs esri
+docker logs pyspark

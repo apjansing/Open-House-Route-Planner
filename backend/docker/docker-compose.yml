@@ -15,12 +15,19 @@ services:
     image: jupyter/pyspark-notebook:${PYSPARK_TAG}
     ports: 
       - ${PYSPARK_EXTERNAL}:${PYSPARK_INTERNAL}
+    volumes: 
+      - ./data:/data
   esri:
+    env_file: credentials.env
     container_name: esri
     image: esridocker/arcgis-api-python-notebook:${ESRI_TAG}
     ports: 
       - ${ESRI_EXTERNAL}:${ESRI_INTERNAL}
-
+    volumes: 
+      - ./data:/home/jovyan/data
+      - ./requirements.txt:/home/jovyan/requirements.txt
 
 networks: 
   neighborhood:
+    name: ${DC_NETWORK}
+    driver: bridge

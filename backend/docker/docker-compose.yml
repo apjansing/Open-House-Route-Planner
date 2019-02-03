@@ -9,7 +9,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     volumes: 
-      - ./mongo/db:/data/db
+      - ./persistence/mongo/db:/data/db
   pyspark:
     container_name: pyspark
     image: jupyter/pyspark-notebook:${PYSPARK_TAG}
@@ -17,6 +17,8 @@ services:
       - ${PYSPARK_EXTERNAL}:${PYSPARK_INTERNAL}
     volumes: 
       - ./data:/data
+      - ./dependencies/pyspark.txt:/home/jovyan/requirements.txt
+      - ./persistence/pyspark:/home/jovyan/work
   esri:
     env_file: credentials.env
     container_name: esri
@@ -25,7 +27,8 @@ services:
       - ${ESRI_EXTERNAL}:${ESRI_INTERNAL}
     volumes: 
       - ./data:/home/jovyan/data
-      - ./requirements.txt:/home/jovyan/requirements.txt
+      - ./dependencies/esri.txt:/home/jovyan/requirements.txt
+      - ./persistence/esri:/home/jovyan/work
 
 networks: 
   neighborhood:

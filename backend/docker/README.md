@@ -7,3 +7,9 @@
 | Dependency | Use |
 |---|---|
 | [ics](https://icspy.readthedocs.io/en/v0.4/) | This will help to parse *.ics calendar data gathered from realty websites. |
+
+To run the `docker-compose.yml` you will need another environment variables file called `credentials.yml` with the your Esri Developer username and password like the snippet below.
+```
+ESRI_USERNAME=foo
+ESRI_PASSWORD=bar
+```

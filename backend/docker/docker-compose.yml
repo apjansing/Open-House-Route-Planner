@@ -25,6 +25,7 @@ services:
     image: esridocker/arcgis-api-python-notebook:${ESRI_TAG}
     ports: 
       - ${ESRI_EXTERNAL}:${ESRI_INTERNAL}
+      - ${GET_DIRECTIONS_EXTERNAL}:${GET_DIRECTIONS_INTERNAL}
     volumes: 
       - ./data:/home/jovyan/data
       - ./dependencies/esri.txt:/home/jovyan/requirements.txt

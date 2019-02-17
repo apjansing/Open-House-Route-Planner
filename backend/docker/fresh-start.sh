@@ -7,3 +7,5 @@
 
 docker logs esri
 docker logs pyspark
+
+docker exec esri python /home/jovyan/work/get_directions.py &

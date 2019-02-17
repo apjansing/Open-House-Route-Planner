@@ -8,7 +8,7 @@
 |---|---|
 | [ics](https://icspy.readthedocs.io/en/v0.4/) | This will help to parse *.ics calendar data gathered from realty websites. |
 | [Flask](http://flask.pocoo.org/) | Used to create REST services. |
-| [virtualenv](hhttps://virtualenv.pypa.io/en/latest/) | Needed by Flask. |
+| [virtualenv](https://virtualenv.pypa.io/en/latest/) | Needed by Flask. |
 
 To run the `docker-compose.yml` you will need another environment variables file called `credentials.yml` with the your Esri Developer username and password like the snippet below.
 ```

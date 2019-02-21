@@ -1,6 +1,5 @@
 #!/bin/bash
 
-./docker-compose-stop.sh
-./docker-compose-start.sh
+./docker-compose-restart.sh
 
 ./install-deps.sh

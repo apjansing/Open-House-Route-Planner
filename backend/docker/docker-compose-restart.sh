@@ -1,5 +1,5 @@
 #!/bin/bash
 
-docker-compose start
+docker-compose restart
 
 ./start_flask_apps.sh

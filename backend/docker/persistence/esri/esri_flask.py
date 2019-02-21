@@ -36,8 +36,6 @@ def get_directions(coordinates):
     }
     """
     coordinates = json.loads(coordinates)
-    ## my_point1 = geocode(address=coordinates["source"], as_featureset=True).features[0].as_dict
-    ## my_point2 = geocode(address=coordinates["destination"], as_featureset=True).features[0].as_dict
     result = route_layer.solve(stops='''%f,%f; %f,%f'''%(coordinates["location_1"]['geometry']['x'], 
                                                      coordinates["location_1"]['geometry']['y'],
                                                      coordinates["location_2"]['geometry']['x'], 
@@ -151,8 +149,17 @@ def get_geocoded(address):
     return json.dumps(geocode(address=address, as_featureset=True).features[0].as_dict)
 
 @app.route('/')
-def hello():
-    return "Open House Route Planner Landing <b>Page<b>"
+@app.route('/<path:p>')
+def wikiproxy(p = ''):
+    import requests
+    url = 'https://apjansing.github.io/Open-House-Route-Planner/{0}'.format(p)
+    try:
+        r = requests.get(url)
+    except Exception as e:
+        return "proxy service error: " + str(e), 503
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(r.content, "html.parser")
+    return str(soup)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0")

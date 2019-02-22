@@ -19,6 +19,9 @@ services:
       - ./data:/data
       - ./dependencies/pyspark.txt:/home/jovyan/requirements.txt
       - ./persistence/pyspark:/home/jovyan/work
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}  
   esri:
     env_file: credentials.env
     container_name: esri

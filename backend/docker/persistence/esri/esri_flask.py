@@ -31,29 +31,29 @@ def get_directions(coordinates):
     get_directions is designed to receive jsons for the following schema.
     A schema checker may be added at some point in the future.
     {
-        "location_1": { "geometry": {"x" : <float>, "y": <float> } },
-        "location_2": { "geometry": {"x" : <float>, "y": <float> } }
+        "location_1": { "geometry": {"x" : <float>, "y": <float> }, * },
+        "location_2": { "geometry": {"x" : <float>, "y": <float> }, * }
     }
     """
     coordinates = json.loads(coordinates)
-    result = route_layer.solve(stops='''%f,%f; %f,%f'''%(coordinates["location_1"]['geometry']['x'], 
-                                                     coordinates["location_1"]['geometry']['y'],
-                                                     coordinates["location_2"]['geometry']['x'], 
-                                                     coordinates["location_2"]['geometry']['y'],
-                                                    ),
-                           directions_language='en-US', return_routes=False,
-                           return_stops=False, return_directions=True,
-                           directions_length_units='esriNAUMiles',
-                           return_barriers=False, return_polygon_barriers=False,
-                           return_polyline_barriers=False, start_time=start_time,
-                           start_time_is_utc=True)
+    result = route_layer.solve(stops='''%f,%f; %f,%f'''%(coordinates["location_1"]['geometry']['x'],
+        coordinates["location_1"]['geometry']['y'],
+        coordinates["location_2"]['geometry']['x'],
+        coordinates["location_2"]['geometry']['y']),
+        directions_language='en-US', return_routes=False,
+        return_stops=False, return_directions=True,
+        directions_length_units='esriNAUMiles',
+        return_barriers=False, return_polygon_barriers=False,
+        return_polyline_barriers=False, start_time=start_time,
+        start_time_is_utc=True)
     
     records = []
     travel_time, time_counter = 0, 0
     distance, distance_counter = 0, 0
 
     for i in result['directions'][0]['features']:
-        time_of_day = datetime.datetime.fromtimestamp(i['attributes']['arriveTimeUTC'] / 1000).strftime('%H:%M:%S')
+        tod_token = i['attributes']['arriveTimeUTC']
+        time_of_day = datetime.datetime.fromtimestamp(tod_token / 1000).strftime('%H:%M:%S')
         time_counter = i['attributes']['time']
         distance_counter = i['attributes']['length']
         travel_time += time_counter
@@ -63,13 +63,11 @@ def get_directions(coordinates):
         
     pd.set_option('display.max_colwidth', 100)
     directions_dataframe = pd.DataFrame.from_records(records, index=[i for i in range(1, len(records) + 1)], 
-                                columns=['Time of day', 'Direction text', 
-                                            'Duration (min)', 'Distance (miles)'])
+        columns=['Time of day', 'Direction text', 'Duration (min)', 'Distance (miles)'])
     directions_json = json.loads(directions_dataframe.to_json(orient='index'))
     directions_json_array = []
     for bar in directions_json:
         directions_json_array += [directions_json[bar]]
-    # print('Trip took %f minutes.' % directions_json_array[-1]['Duration (min)'])
     return json.dumps(directions_json_array)
 
 @app.route('/get_geocode/<address>')

@@ -2,6 +2,8 @@ import json
 import datetime
 import pandas as pd
 import pymongo as pm
+import re
+import string
 
 import requests
 from bs4 import BeautifulSoup
@@ -30,6 +32,7 @@ def create_loc_index(collection, name = "geometry", location_type = "2dsphere"):
     collection.create_index([(name,  location_type)])
 
 def get_location_information(address):
+    address = format_address(address)
     url = 'http://esri:5000/get_geocode/%s' % quote_plus(address)
     try:
         r = requests.get(url)
@@ -50,16 +53,32 @@ def search_collection(collection, search_val = None, limit = 10):
         return collection.find(search_val)
 
 def address_info_in_database(collection, address):
+    address = format_address(address)
     search_val = {"address" : address}
     cursor = search_collection(collection, search_val = search_val, limit=1)
     return cursor.count() > 0
+
+def format_address(address):
+    formatted_address = address.lower()
+    remove_spaces = lambda s : remove_spaces(re.sub("  ", " ", s)) if "  " in s else s
+    whitelist = string.ascii_lowercase + string.digits + ' '
+    formatted_address = remove_spaces(formatted_address)
+    formatted_address = ''.join(c for c in formatted_address if c in whitelist)
+    return formatted_address
+
+def safe_query_for_location_info(address):
+    if not address_info_in_database(homes_collection.homes, address):
+        print("Address not found! Gathering data from Esri.")
+        data = get_location_information(address)
+        load_location_information(homes_collection.homes, data)
+        print(search_collection(homes_collection.homes, {"address" : format_address(address)}).next())
+    else:
+        print("Address found! Gathering data from MongoDB.")
+        print(search_collection(homes_collection.homes, {"address" : format_address(address)}).next())
 
 if __name__ == '__main__':
     connection = pm.MongoClient(uri)
     homes_collection = connection.homes_collection
     create_loc_index(homes_collection.homes)
-    data = get_location_information("415 Van Dyke Rd, Liverpool, NY 13088")
-    load_location_information(homes_collection.homes, data)
-    search_collection(homes_collection.homes)
-    print(address_info_in_database(homes_collection.homes, "415 Van Dyke Rd, Liverpool, NY 13088"))
-    print(address_info_in_database(homes_collection.homes, "4807 Bear Rd, Liverpool, NY"))
+    safe_query_for_location_info("415 Van    DyKe Rd., Utica, NY 13502")
+    safe_query_for_location_info("999 cOuntY   roUTe 85, OSWego,  NY 13126")

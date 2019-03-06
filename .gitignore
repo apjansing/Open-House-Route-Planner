@@ -1,6 +1,9 @@
 # Ignore my credentials
 credentials.env
 
+# Python
+*.pyc
+
 # Logs
 logs
 *.log

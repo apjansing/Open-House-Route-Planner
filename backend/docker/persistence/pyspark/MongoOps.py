@@ -12,6 +12,9 @@ from urllib.parse import quote_plus
 # from ICSParser import ICSParser
 
 class MongoOps():
+    """
+    docstring for MongoOps
+    """
     # def __init__(self, username=os.environ['MONGO_INITDB_ROOT_USERNAME'], 
     #                 password=os.environ['MONGO_INITDB_ROOT_PASSWORD'], 
     #                 host="mongo:27017"):
@@ -77,7 +80,7 @@ class MongoOps():
         elif type(event)==str:
             address = event
         if not self.address_info_in_database(self.homes_database.homes, address):
-            print("Address not found! Gathering data from Esri.")
+            print("%s not found! Gathering data from Esri." % address)
             data = self._query_for_location_info(address)
             if type(event)==dict:
                 event["location"] = data
@@ -87,19 +90,6 @@ class MongoOps():
             result = self.search_collection(self.homes_database.homes, {"location.address" : self.format_address(address)}).next()
             return result
         else:
-            print("Address found! Gathering data from MongoDB.")
+            print("%s found! Gathering data from MongoDB." % address)
             result = self.search_collection(self.homes_database.homes, {"location.address" : self.format_address(address)}).next()
             return result
-
-# def run_tests():
-#     mops = MongoOps()
-#     mops.safe_query_for_location_info("415 Van    DyKe Rd., Utica, NY 13502")
-#     mops.safe_query_for_location_info("999 cOuntY   roUTe 85, OSWego,  NY 13126")
-#     mops.safe_query_for_location_info("6906 Quail Lake Drive, San Antonio, TX")
-
-#     parser = ICSParser("../data/6jan18/download.ics")
-#     event = parser.to_dict()
-#     pprint.pprint(mops.safe_query_for_location_info(event))
-
-# if __name__ == '__main__':
-#     run_tests()

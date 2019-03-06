@@ -4,6 +4,9 @@ import pprint
 from sys import argv
 
 class ICSParser():
+    """
+    docstring for ICSParser
+    """
     def __init__(self, filename = None):
         self.filename = filename
         self.event = []
@@ -29,8 +32,3 @@ class ICSParser():
                 E[1] = dateutil.parser.parse(E[1])
             event_dict[E[0]] = E[1]
         return event_dict
-
-
-# if __name__ == '__main__':
-#     parser = ICSParser(argv[1])
-#     pprint.pprint(parser.to_dict())

@@ -11,6 +11,7 @@ services:
     volumes: 
       - ./persistence/mongo/db:/data/db
   pyspark:
+    env_file: credentials.env
     container_name: pyspark
     image: jupyter/pyspark-notebook:${PYSPARK_TAG}
     ports: 

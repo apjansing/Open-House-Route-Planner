@@ -1,7 +1,6 @@
 import os
 import re
 import json
-import pprint
 import string
 import hashlib
 import requests
@@ -50,9 +49,8 @@ class MongoOps():
         else:
             return collection.find(search_val)
 
-    def address_info_in_database(self, collection, address):
-        address = self.format_address(address)
-        search_val = {"location.address" : address}
+    def address_info_in_database(self, collection, address_hash):
+        search_val = {"address_hash" : address_hash}
         cursor = self.search_collection(collection, search_val = search_val, limit=1)
         return cursor.count() > 0
 
@@ -86,17 +84,20 @@ class MongoOps():
             address = event["location"]
         elif type(event)==str:
             address = event
-        if not self.address_info_in_database(self.homes_database.homes, address):
+        address = self.format_address(address)
+        address_hash = self.get_hash(address)
+        if not self.address_info_in_database(self.homes_database.homes, address_hash):
             print("%s not found! Gathering data from Esri." % address)
             data = self._query_for_location_info(address)
             if type(event)==dict:
                 event["location"] = data
+                event["address_hash"] = address_hash
             elif type(event)==str:
-                event = {"location": data}
+                event = {"location": data, "address_hash": address_hash}
             self.load_dict(self.homes_database.homes, event)
         else:
             print("%s found! Gathering data from MongoDB." % address)
-        result = self.search_collection(self.homes_database.homes, {"location.address" : self.format_address(address)}).next()
+        result = self.search_collection(self.homes_database.homes, {"address_hash" : address_hash}).next()
         return result
 
     def get_hash(self, strings):
@@ -158,19 +159,23 @@ class MongoOps():
         
     def safe_query_for_directions(self, start, stop):
         start_str = self.get_address_from_loc_data(start)
-        start_data = self.safe_query_for_location_info(start_str)["location"]
+        start_data = self.safe_query_for_location_info(start_str)
 
         stop_str = self.get_address_from_loc_data(stop)
-        stop_data = self.safe_query_for_location_info(stop_str)["location"]
+        stop_data = self.safe_query_for_location_info(stop_str)
 
-        direction_hash = self.get_hash([start_str, stop_str])
-        if not self.direction_in_database(self.directions_collection, direction_hash):
+        directions_hash = self.get_hash([start_str, stop_str])
+        if not self.direction_in_database(self.directions_collection, directions_hash):
             print("Directions from %s to %s not found! Gathering data from Esri." % (start_str, stop_str))
-            directions = self._query_for_directions(start_data, stop_data)
+            directions = self._query_for_directions(start_data["location"], stop_data["location"])
+            directions["directions_hash"] = directions_hash
+            directions["start"] = start_data["location"]["address"]
+            directions["stop"] = stop_data["location"]["address"]
+            
             self.load_dict(self.directions_collection, directions)
         else:
             print("Directions from %s to %s found! Gathering data from MongoDB." % (start_str, stop_str))
-            directions = mops.search_collection(mops.directions_collection, {"directions_hash": Binary(data = direction_hash)}).next()
+            directions = self.search_collection(self.directions_collection, {"directions_hash": directions_hash}).next()
         return directions
             
 

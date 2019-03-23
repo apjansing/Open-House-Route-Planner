@@ -17,7 +17,8 @@ class MongoOps():
     """
     def __init__(self, username="admin", 
                     password="admin", 
-                    host="mongo:27017"):                    
+                    host="mongo:27017",
+                    testing=False):
         self.username = username
         self.password = password
         self.host = host
@@ -32,6 +33,7 @@ class MongoOps():
 
         self.create_loc_index(self.homes_collection)
         self.create_loc_index(self.directions_collection)
+        self.testing = testing
 
     def drop_table(self, collection):
         collection.drop()
@@ -87,7 +89,7 @@ class MongoOps():
         address = self.format_address(address)
         address_hash = self.get_hash(address)
         if not self.address_info_in_database(self.homes_database.homes, address_hash):
-            print("%s not found! Gathering data from Esri." % address)
+            self.print_test("%s not found! Gathering data from Esri." % address)
             data = self._query_for_location_info(address)
             if type(event)==dict:
                 event["location"] = data
@@ -96,7 +98,7 @@ class MongoOps():
                 event = {"location": data, "address_hash": address_hash}
             self.load_dict(self.homes_database.homes, event)
         else:
-            print("%s found! Gathering data from MongoDB." % address)
+            self.print_test("%s found! Gathering data from MongoDB." % address)
         result = self.search_collection(self.homes_database.homes, {"address_hash" : address_hash}).next()
         return result
 
@@ -166,7 +168,7 @@ class MongoOps():
 
         directions_hash = self.get_hash([start_str, stop_str])
         if not self.direction_in_database(self.directions_collection, directions_hash):
-            print("Directions from %s to %s not found! Gathering data from Esri." % (start_str, stop_str))
+            self.print_test("Directions from %s to %s not found! Gathering data from Esri." % (start_str, stop_str))
             directions = self._query_for_directions(start_data["location"], stop_data["location"])
             directions["directions_hash"] = directions_hash
             directions["start"] = start_data["location"]["address"]
@@ -174,10 +176,13 @@ class MongoOps():
             
             self.load_dict(self.directions_collection, directions)
         else:
-            print("Directions from %s to %s found! Gathering data from MongoDB." % (start_str, stop_str))
+            self.print_test("Directions from %s to %s found! Gathering data from MongoDB." % (start_str, stop_str))
             directions = self.search_collection(self.directions_collection, {"directions_hash": directions_hash}).next()
         return directions
-            
+
+    def print_test(self, string):
+        if self.testing:
+            print(string)    
 
 if __name__ == "__main__":
     from ICSParser import ICSParser

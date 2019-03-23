@@ -22,7 +22,7 @@ class ICSParser():
                 line = line.strip().split(":", 1)
                 if line[0] in ["URL", "DTSTART", "DTEND", "SUMMARY", "DESCRIPTION", "LOCATION"]:
                     if(len(line)==2):
-                        event += [[line[0].lower(), line[1]]]
+                        event += [[line[0].lower(), line[1].strip()]]
         self.event = event
         return event
         

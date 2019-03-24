@@ -7,16 +7,17 @@ from os.path import isfile, join
 
 
 class DirectionsMatrix():
-    def __init__(self, locations = [], mops = MongoOps()):
+    def __init__(self, locations, mops = MongoOps()):
+        self.mops = mops
         self.locations = locations
         self.directions_matrix = None
-        self.mops = mops
+        self.simplified_directions_matrix = None
     
     def get_directions_matrix(self):
         directions_matrix = []
-        for location1 in locations:
+        for location1 in self.locations:
             loc1_row = []
-            for location2 in locations:
+            for location2 in self.locations:
                 if location1['location'] != location2['location']:
                     loc1_loc2_directions = self.mops.safe_query_for_directions(start = location1, stop = location2)
                     loc1_row += [loc1_loc2_directions]
@@ -49,7 +50,8 @@ class DirectionsMatrix():
         durations = []
         for j in range(len(self.directions_matrix[row])):
             if self.directions_matrix[row][j] == None:
-                durations += [[j, -1]]
+                pass
+                # durations += [[j, -1]]
             else:
                 duration = self.directions_matrix[row][j]['directions'][-1]['Duration (min)']
                 durations += [[j, duration]]

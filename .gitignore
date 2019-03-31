@@ -3,6 +3,7 @@ credentials.env
 
 # Python
 *.pyc
+.ipynb_checkpoints/
 
 # Logs
 logs

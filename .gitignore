@@ -3,7 +3,7 @@ credentials.env
 
 # Python
 *.pyc
-.ipynb_checkpoints/
+backend/docker/persistence/pyspark/.ipynb_checkpoints
 
 # Logs
 logs

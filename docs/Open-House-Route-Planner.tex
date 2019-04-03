@@ -1,0 +1,274 @@
+%
+% Elizabeth Wilcox
+% MAT 373: Number Theory
+%
+\documentclass[11 pt]{article}
+% \documentclass[11 pt]{IEEEtran}
+
+%  packages
+\usepackage{amssymb, amsmath, amsthm, enumerate, graphicx, multirow, float, color, xcolor}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usetikzlibrary{arrows}
+
+%  margins
+\textwidth = 6.5 in 
+\textheight = 9 in 
+\oddsidemargin = 0.0 in 
+\evensidemargin = 0.0 in 
+\topmargin = 0.0 in 
+\headheight = 0.0 in 
+\headsep = 0.0 in 
+
+%  theorems, corollaries, etc.
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem*{example}{Example}
+\newtheorem{dfn}[thm]{Definition}
+
+\renewcommand{\qedsymbol}{\vrule height 5pt width 4pt depth -1pt}
+
+% spacing shortcuts
+\def\skip{\vspace{10 pt}}
+\def\medskip{\vspace{15 pt}}
+
+% text shortcuts
+\def\ie{{i.e.,}\ }
+\def\eg{{e.g.,}\ }
+\def\bbar#1{\overline{#1}}
+
+%  set shortcuts
+% \def\QQ{\mathbb{Q}}
+% \def\ZZ{\mathbb{Z}}
+% \def\RR{\mathbb{R}}
+% \def\CC{\mathbb{C}}
+% \def\NN{\mathbb{N}}
+\def\ket#1{\big|{#1}\big>}
+\def\bra#1{\big<{#1}\big|}
+
+\def\red#1{\textcolor{red}{#1}}
+% \def\br{\beta-reduction}
+% \def\ar{\alpha-reduction}
+% \def\er{\eta-reduction}
+
+% number theory shortcuts
+\def\divides{\big |}
+\def\gcd#1#2{\textrm{gcd}({#1},{#2})}
+\def\ord#1{|{#1}|}
+
+% logic shortcuts
+\def\iff{\Leftrightarrow}
+\thispagestyle{empty}
+
+% standard math packages
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{scrextend}
+\usepackage{tikz}
+\usetikzlibrary{arrows, shapes, plothandlers}
+\usepackage{tikz}
+\usepackage{tikzscale}
+\usepackage{ragged2e}
+
+\usepackage{hyperref}
+\usepackage{url}
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\makeatother
+
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breakatwhitespace=true,
+  tabsize=3,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}
+}
+
+
+% Phil Parker's DGS packages, some modified
+\usepackage{remexpp,pprroof,dgstpp}
+
+% other packages
+\usepackage{setspace}
+%\usepackage{hyperref,color}
+
+% "fancy" font
+\usepackage{fourier}
+\usepackage[T1]{fontenc}
+   
+% make reference header the right font size
+\renewcommand\refname{\Large References}
+   
+% theorems, remarks, etc using Phil Parker's "remexpp.sty"
+% \newtheorem{theorem}{Theorem}[section]
+% \newtheorem{prop}[theorem]{Proposition}
+% \newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{claim}[theorem]{Claim}
+% \newtheorem{corollary}[theorem]{Corollary}
+% \newremark{definition}[theorem]{Definition}
+% \newremark{example}[theorem]{Example}
+% \newremark{remark}[theorem]{Remark} 
+
+% make rsfs, TeX \cal, and Euler script *all* available
+\usepackage{mathrsfs}
+\let\rscr=\mathscr
+\let\mathscr=\relax
+\let\mcal=\mathcal
+\usepackage{eucal}
+\let\escr=\mathcal
+\let\mathcal=\relax
+
+% commutative diagrams with XY-pic
+\usepackage[all]{xy}
+\SelectTips{cm}{}
+
+\arraycolsep .2em
+   
+% new commands
+\renewcommand{\a}{\alpha}
+\newcommand{\Aut}[1]{\textrm{Aut}(#1)}
+\newcommand{\B}{\rscr{B}}
+\newcommand{\br}[2]{\left[#1,#2\right]}
+\newcommand{\bre}{\br{\ }{\,}}
+\newcommand{\ddg}{\ddot{\g}}
+\newcommand{\dg}{\dot{\g}}
+\newcommand{\DGS}{D{\kern-.375em}G{\kern-.2em}S}
+\newcommand{\ds}{\oplus}
+\newcommand{\eB}{\escr{B}}
+\newcommand{\eH}{\escr{H}}
+\newcommand{\eI}{\escr{I}}
+\newcommand{\eV}{\escr{V}}
+\newcommand{\g}{\gamma}
+\newcommand{\G}{\Gamma}
+\newcommand{\h}{\lal{h}}
+\renewcommand{\H}{\rscr{H}}
+\newcommand{\hp}{\h_{2p + 1}}
+\newcommand{\iso}{\cong}
+\newcommand{\lag}{\mathfrak{g}}
+\newcommand{\lal}[1]{\mathfrak{#1}}
+\newcommand{\n}{\lal{n}}
+\newcommand{\pplus}{+\mspace{-10 mu}+}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\rS}{\rscr{S}}
+\renewcommand{\span}[1]{[\mspace{-3.25 mu}[ #1 ]\mspace{-3.25 mu}]}
+\newcommand{\surj}{\rightarrow\kern-.82em\rightarrow}
+\newcommand{\tQ}{\widetilde{Q}}
+\renewcommand{\v}{\lal{v}}
+\newcommand{\V}{\rscr{V}}
+\newcommand{\z}{\lal{z}}
+%%Alex's defined commands%%
+\newcommand{\adx}{ad$_x$ }
+\newcommand{\ady}{ad$_y$ }
+\newcommand{\adz}{ad$_z$ }
+\newcommand{\fj}{\mathfrak{j}}
+\newcommand{\fg}{\mathfrak{g}}
+\newcommand{\fz}{\mathfrak{z}}
+\newcommand{\fv}{\mathfrak{v}}
+\newcommand{\fh}{\mathfrak{h}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathbb{F}}
+
+
+\makeatletter
+\newcommand{\ad}[1]{\mathop{\operator@font ad}\nolimits_{#1}}
+\makeatother
+
+% show labels in margin (must be last package added)
+\usepackage{showlabels}
+
+% input information for the title page here:
+\preprint{}
+\title{Open House Route Planner}
+\author{Alexander Jansing}
+\address{
+   Computer Science Department\\
+   State University of New York,\\
+   Polytechnic Institute\\
+   Utica, NY 13502\\
+   USA\\
+   \textsf{jansina@sunypoly.edu}
+}
+\date{\today}
+\abstract{
+Consectetur sit aliquip pariatur anim et proident nisi mollit labore exercitation sunt exercitation fugiat.
+}
+\msc{}{}
+
+\begin{document}
+\maketitle
+\section{Introduction}
+\subsection{Motivation}
+I have been looking for houses. When I add open houses to my Google Calendar, I am able to request direction to whatever house is open next in time, but I was thinking
+
+Last year, I had been looking for a house and was trying to visit as many open houses as I could. I noticed that, unless I was looking at houses that were fairly close to eac other, I needed to put some thought into:
+\begin{enumerate}
+  \item which house I was interested in,
+  \item where the houses were with respect to each other,
+  \item when the open houses were,
+  \item and try to determine the path I needed to take to visit as many open houses as possible.
+\end{enumerate}
+So the question became, ``What if two houses are significantly far apart, open at similar times, and there are other houses in each of their respective neighborhoods that open at different times? Is there a way I can plan my day of house hunting so that I can attend all of the open houses?''
+
+The answer to this question is, ``yes, within reason.''
+
+\subsection{Objective}
+Provide a series of open houses and the application will find a route that will allow the user to visit the maximum number of open houses given the constraints of travel time between locations and when the open houses are open.
+
+
+
+
+
+
+\newpage
+\begin{thebibliography}{99}
+
+\end{thebibliography}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

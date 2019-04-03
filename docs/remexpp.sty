@@ -1,0 +1,46 @@
+% remexpp.sty for LaTeX 2.09 -- Released 6 Jul 1998 
+% Copyright (C) 1998 by Phillip E. Parker  phil@math.wichita.edu 
+%
+% make theorem-like environment that sets text upright instead of italic
+% use \newremark exactly like \newtheorem
+%
+\typeout{Remark, example, etc. environment by Phil Parker < 6 Jul 1998 >}
+\typeout{}
+
+\def\newremark#1{\@ifnextchar[{\@ormk{#1}}{\@nrmk{#1}}}
+ 
+\def\@nrmk#1#2{%
+\@ifnextchar[{\@xnrmk{#1}{#2}}{\@ynrmk{#1}{#2}}}
+ 
+\def\@xnrmk#1#2[#3]{\expandafter\@ifdefinable\csname #1\endcsname
+{\@definecounter{#1}\@addtoreset{#1}{#3}%
+\expandafter\xdef\csname the#1\endcsname{\expandafter\noexpand
+  \csname the#3\endcsname \@thmcountersep \@thmcounter{#1}}%
+\global\@namedef{#1}{\@rmk{#1}{#2}}\global\@namedef{end#1}{\@endremark}}}
+ 
+\def\@ynrmk#1#2{\expandafter\@ifdefinable\csname #1\endcsname
+{\@definecounter{#1}%
+\expandafter\xdef\csname the#1\endcsname{\@thmcounter{#1}}%
+\global\@namedef{#1}{\@rmk{#1}{#2}}\global\@namedef{end#1}{\@endremark}}}
+
+%% RmS 92/01/10: check for existence of remark environment #2
+\def\@ormk#1[#2]#3{%
+  \@ifundefined{c@#2}{\@latexerr{No remark environment `#2' defined}\@eha}%
+  {\expandafter\@ifdefinable\csname #1\endcsname
+  {\global\@namedef{the#1}{\@nameuse{the#2}}%
+\global\@namedef{#1}{\@rmk{#2}{#3}}%
+\global\@namedef{end#1}{\@endremark}}}}
+ 
+\def\@rmk#1#2{\refstepcounter
+    {#1}\@ifnextchar[{\@yrmk{#1}{#2}}{\@xrmk{#1}{#2}}}
+ 
+\def\@xrmk#1#2{\@beginremark{#2}{\csname the#1\endcsname}\ignorespaces}
+\def\@yrmk#1#2[#3]{\@opargbeginremark{#2}{\csname
+       the#1\endcsname}{#3}\ignorespaces}
+ 
+\def\@beginremark#1#2{\trivlist \item[\hskip \labelsep{\bfseries #1\ #2\,}]}
+\def\@opargbeginremark#1#2#3{\trivlist
+      \item[\hskip \labelsep{\bfseries #1\ #2\ (#3)\,}]}
+\def\@endremark{\endtrivlist}
+\endinput
+ 

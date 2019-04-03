@@ -1,0 +1,92 @@
+% pprroof.sty
+% originally :
+% pproof.sty for LaTeX 2.09 -- Released 18 Mar 1996 
+% modified for use with Latex 2e and amsmath package 13 Nov 2007
+% Copyright (C) 1996, 2007 by Phillip E. Parker  phil@math.wichita.edu
+%
+% slightly modified 25 May 2014 by Justin Ryan
+%
+% This style defines the proof environment. Use it by calling \begin{proof} 
+% and finish with \end{proof}. Calling it with \begin{proof}[name] allows 
+% the inclusion of an optional name; in this it is similar to the theorem 
+% environment. \eop may be called separately before \end{proof} without 
+% conflict; e.g., inside display math. In each case, \Box is put at the 
+% right margin, below an equation number if present. This style also 
+% modifies the equation, eqnarray, and eqnarray* environments so that one 
+% can call \eop on the last line to mark the end of a proof.
+\typeout{Proof environment by Phil Parker < 13 Nov 2007 >}
+\typeout{J.R. was here <25 May 2014>}
+\typeout{}
+%\makeatletter % Uncomment to use in a preamble.
+ 
+% For convenience, there is a separate end-of-proof symbol \eops. It takes 
+% an optional argument to control how much it is lowered; the default is 
+% 1.25ex. Positive amounts raise it and negative ones lower it more. You 
+% must place it _exactly_ where you want it. 
+\def\eops{\@ifnextchar[{\@opargeops}{\@eops}}
+\newlength{\@ptemp}
+
+\def\@opargeops[#1]{\setlength{\@ptemp}{1.25ex}%
+\addtolength{\@ptemp}{-#1}\lower\@ptemp\hbox{$\blacksquare$}}
+
+\def\@eops{\lower 1.25ex\hbox{$\blacksquare$}}
+% These conditionals control when to place an \eops (all initially false).
+\global\newif\ifeopmark
+\global\newif\ifeqn 
+\global\newif\ifproof
+\global\newif\ifproofended 
+% \eop either places an \eops appropriately, or sets a flag for later use, 
+% when called inside a proof environment. Since some "invisible" commands
+% (such as \label) may produce visible space, call \eop _last_.
+\def\eop{\ifproofended
+\else\leavevmode\ifproof\global\proofendedtrue\fi
+\ifhmode\unskip\nobreak\hfil\penalty 50 
+   \hskip.4em\hbox{}\nobreak\hfil\eops[.5ex]
+   \parfillskip=0pt \finalhyphendemerits=0
+\else\ifmmode\ifinner\global\eopmarktrue
+\else\ifeqn\global\eopmarktrue
+\else\eqno{\eops}\fi\fi\fi\fi\fi}
+% This defines the proof environment. 
+\def\proof{\prooftrue\proofendedfalse\@ifnextchar[{\@opargproof}{\@proof}}
+\def\endproof{\eop\end{trivlist}\global\proofendedfalse}
+
+\def\@opargproof[#1]{\begin{trivlist}%
+\item[]\textbf{Proof (#1):\, }}
+\let\end@opargproof=\endproof
+
+\def\@proof{\begin{trivlist}%
+\item[]\textbf{Proof:\, }}
+\let\end@proof=\endproof
+% Next, the modified equation which can mark the end of a proof with an 
+% appropriately placed \eops. Use by placing \eop just before
+% \end{equation}.
+% This does not work with 2e and amsmath now. PEP 13 Nov 2007 
+%\let\oldequation=\equation
+%\def\equation{\eqntrue\oldequation}
+%\def\endequation{\ifeopmark\eqno % This must be changed now. PEP
+%   \hbox{\@eqnnum}\makebox[0pt][r]{\eops[-1.75ex]}%
+%   \else\eqno\hbox{\@eqnnum}\fi$$
+%\global\@ignoretrue\global\eopmarkfalse
+%\ifproof\else\global\proofendedfalse\fi}
+
+% Next, the modified eqnarray which can end a proof similarly. Use by 
+% placing \eop just before \end{eqnarray}. 
+\def\endeqnarray{\let\@tempa\relax
+   \ifcase\@eqcnt \def\@tempa{& & &}\or \def\@tempa{& &}%
+   \else \def\@tempa{&}\fi \@tempa 
+\if@eqnsw\@eqnnum\ifeopmark\makebox[0pt][r]{\eops[-1.75ex]}\fi
+   \stepcounter{equation}\else\ifeopmark\makebox[0pt][r]{\eops}\fi\fi
+\global\@eqnswtrue\global\@eqcnt\z@\cr\egroup 
+\global\advance\c@equation\m@ne$$\global\@ignoretrue
+\global\eopmarkfalse\ifproof\else\global\proofendedfalse\fi}
+% Finally, the modified eqnarray* which can end a proof similarly. Use by 
+% placing \eop just before \end{eqnarray*}. 
+\@namedef{endeqnarray*}{\let\@tempa\relax
+   \ifcase\@eqcnt \def\@tempa{& & &}\or \def\@tempa{& &}%
+   \else \def\@tempa{&}\fi \@tempa 
+\if@eqnsw\ifeopmark\makebox[0pt][r]{\eops}\fi\fi
+\global\@eqnswtrue\global\@eqcnt\z@\cr\egroup
+\global\advance\c@equation\m@ne$$\global\@ignoretrue
+\global\eopmarkfalse\ifproof\else\global\proofendedfalse\fi}
+%\makeatother % Uncomment to use in a preamble. 
+\endinput % Comment out to use in a preamble. 

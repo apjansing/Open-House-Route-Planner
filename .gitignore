@@ -79,3 +79,11 @@ mongo.lock*.bson
 *.turtle
 WiredTiger*
 *.bson
+
+# LaTeX  auxiliary files and output
+*.log
+*.out
+*.aux
+# *.pdf
+*.fdb_latexmk
+*.fls

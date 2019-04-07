@@ -18,18 +18,18 @@ def random_combination(iterable, r):
     indices = sorted(random.sample(range(n), r))
     return tuple(pool[i] for i in indices)
 
-""" 
-A Python Class
-A simple Python graph class, demonstrating the essential 
-facts and functionalities of graphs.
-Original implementation from https://www.python-course.eu/graphs_python.php
-Changes to include weighted edges from https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2
-Some functions have been removed because they are not 
-going to be used, and I would like to protect future 
-users from using this graph object incorrectly.
-"""
 
 class Graph(object):
+    """ 
+    A Python Class
+    A simple Python graph class, demonstrating the essential 
+    facts and functionalities of graphs.
+    Original implementation from https://www.python-course.eu/graphs_python.php
+    Changes to include weighted edges from https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2
+    Some functions have been removed because they are not 
+    going to be used, and I would like to protect future 
+    users from using this graph object incorrectly.
+    """
     def __init__(self, graph_dict=None):
         """ initializes a graph object 
             If no dictionary or None is given, 
@@ -96,6 +96,9 @@ class Graph(object):
         return edges
 
     def get_edges(self, vertex):
+        """
+        returns the edges of a vertex dictionary
+        """
         edges = []
         for neighbour in vertex['edges']:
             weight = neighbour[1]
@@ -123,17 +126,17 @@ class Graph(object):
         return r
 
 class OpenHouseGraph(Graph):
-    # def __init__(self, graph_dict=None):
-    #     """ initializes a graph object 
-    #         If no dictionary or None is given, 
-    #         an empty dictionary will be used
-    #     """
-    #     if graph_dict == None:
-    #         graph_dict = {}
-    #     self.__graph_dict = graph_dict
-    #     self.__vertices = self.vertices()
+    """
+    OpenHouseGraph extends the Graph Object. Base Graph object was inspired by,
+    https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2
+    """
 
     def visit_next(self, current_vertex, arrival_time, average_time_at_each_house = 30, visited = []):
+        """
+        Recursive function, given by a starting vertex, iterate over outbound 
+        edges to travel to every house and determine what the time would be
+        after getting to a destination. 
+        """
         entire_trip = []
         current_time = arrival_time
         idx = current_vertex['ID']
@@ -175,6 +178,9 @@ class OpenHouseGraph(Graph):
         return entire_trip
 
     def get_acyclic_edges(self, edges, visited):
+        """
+        Gets edges out of a vertex that have not been visited.
+        """
         E = []
         for edge in edges:
             idx = edge[1]
@@ -186,16 +192,25 @@ class OpenHouseGraph(Graph):
             
     def been_visited(self, visited, v):
         '''
-        Checks to make sure you're not going back to a node that has already been visited.
+        Checks to make sure you're not going back to a node that has already 
+        been visited.
         '''
         return v in visited
 
     def open_and_closed(self, arrival_time, next_vertex):
+        """
+        Determines whether an open house has started/ended when you arrive.
+        """
         opened = arrival_time >= next_vertex['start']
         closed = arrival_time >= next_vertex['end']
         return [opened, closed]
 
-    def get_wait_function(self, opened, closed): #ideal True, True
+    def get_wait_function(self, opened, closed):
+        """
+        Given the combination of booleans opened and closed, set the wait variable
+        to a given set of values. Return the lambda function corresponding key equal
+        to the wait variable.
+        """
         if opened and not closed:
             wait = "No need to wait"
         elif not opened and not closed:
@@ -213,6 +228,10 @@ class OpenHouseGraph(Graph):
         return wait_function[wait]
         
     def convert_mins_to_time(self, time):
+        """
+        Converts a time in the form of 600 to its more recognisable form.
+        600 corresponding to 10:00 (or 600 minutes from midnight).
+        """
         hours_minutes = str(time / 60).split('.')
         hours_minutes[0] = hours_minutes[0]
         hours_minutes[1] = str(float('0.'+hours_minutes[1]) * .6)[2:4]

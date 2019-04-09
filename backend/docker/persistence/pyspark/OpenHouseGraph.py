@@ -150,24 +150,24 @@ class OpenHouseGraph(Graph):
     #     print('Leaving at vertex %d at time %f' % (idx, current_time))
         
         edges = self.get_edges(current_vertex)
-        edges_no_cycle = self.get_acyclic_edges(edges, visited)
+        acyclic_edges = self.get_acyclic_edges(edges, visited)
         
-        if len(edges_no_cycle) > 0:
-            for edge in edges_no_cycle:
+        if len(acyclic_edges) > 0:
+            for edge in acyclic_edges:
                 next_vertex = self.get_vertex_from_vid(edge[1])
-                current_time_1 = current_time + edge[2]
+                time_at_next_vertex = current_time + edge[2]
                 
                 '''
                 Check if the Open house has started yet, and wait for it to open
                 if it hasn't closed yet.
                 '''
-                opened, closed = self.open_and_closed(current_time_1, next_vertex)
+                opened, closed = self.open_and_closed(time_at_next_vertex, next_vertex)
                 wait_function = self.get_wait_function(opened, closed)
-                current_time_2 = wait_function(next_vertex['start'], current_time_1)
-                if current_time_2 < 0:
+                time_at_next_vertex = wait_function(next_vertex['start'], time_at_next_vertex)
+                if time_at_next_vertex < 0:
                     continue
                 else:
-                    trip = self.visit_next(next_vertex, current_time_2, visited = visited)
+                    trip = self.visit_next(next_vertex, time_at_next_vertex, visited = visited)
                     try:
                         if isinstance(trip[0], list):
                             for t in trip:
@@ -227,11 +227,11 @@ class OpenHouseGraph(Graph):
         to a given set of values. Return the lambda function corresponding key equal
         to the wait variable.
         """
-        if opened and not closed:
-            wait = "No need to wait"
-        elif not opened and not closed:
+        if not opened:
             wait = "Wait"
-        elif opened and closed:
+        elif not closed:
+            wait = "No need to wait"
+        elif closed:
             wait = "Too late"
         else:
             wait = "Time doesn't work that way!"

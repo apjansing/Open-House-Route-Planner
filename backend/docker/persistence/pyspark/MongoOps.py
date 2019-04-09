@@ -83,6 +83,11 @@ class MongoOps():
     def safe_query_for_location_info(self, event):
         address = ""
         if type(event)==dict:
+            try:
+                if len(event.keys()) < 1:
+                    return None
+            except:
+                return None
             address = event["location"]
         elif type(event)==str:
             address = event

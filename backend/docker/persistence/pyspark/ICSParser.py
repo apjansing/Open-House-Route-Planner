@@ -1,6 +1,5 @@
 from datetime import datetime
 import dateutil.parser
-import pprint
 from sys import argv
 
 class ICSParser():
@@ -18,11 +17,14 @@ class ICSParser():
             filename = self.filename
         event = []
         with open(filename, "r") as file:
-            for line in file:
-                line = line.strip().split(":", 1)
-                if line[0] in ["URL", "DTSTART", "DTEND", "SUMMARY", "DESCRIPTION", "LOCATION"]:
-                    if(len(line)==2):
-                        event += [[line[0].lower(), line[1].strip()]]
+            try:
+                for line in file:
+                    line = line.strip().split(":", 1)
+                    if line[0] in ["URL", "DTSTART", "DTEND", "SUMMARY", "DESCRIPTION", "LOCATION"]:
+                        if(len(line)==2):
+                            event += [[line[0].lower(), line[1].strip()]]
+            except:
+                print("There was a problem parsing open house ics file {}".format(filename))
         self.event = event
         return event
         

@@ -60,15 +60,16 @@ class DirectionsMatrix():
 
 
 if __name__ == "__main__":
-    sample_data_files = [f for f in listdir("/data") if isfile(join("/data", f))]
+    sample_data_files = [f for f in listdir("/data") if isfile(join("/data", f)) and f != '.DS_Store' ]
     mops = MongoOps()
     locations = []
     for open_house_file in sample_data_files:
         parser = ICSParser("/data/%s" % open_house_file)
         event = parser.to_dict()
         # print(event)
-        result = mops.safe_query_for_location_info(event)
-        locations += [result]
+        if event != None:
+            result = mops.safe_query_for_location_info(event)
+            locations += [result]
     dir_mx = DirectionsMatrix(locations, mops)
     # dir_mx.get_directions_matrix()
     dir_mx.generate_simplified_directions_matrix()

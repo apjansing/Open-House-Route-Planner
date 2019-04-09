@@ -145,7 +145,6 @@ class OpenHouseGraph(Graph):
             return visited
         else:
             visited += [idx]
-        print('visited', visited)
         current_time += average_time_at_each_house
         
     #     print('Leaving at vertex %d at time %f' % (idx, current_time))
@@ -158,7 +157,6 @@ class OpenHouseGraph(Graph):
                 next_vertex = self.get_vertex_from_vid(edge[1])
                 current_time_1 = current_time + edge[2]
                 
-                
                 '''
                 Check if the Open house has started yet, and wait for it to open
                 if it hasn't closed yet.
@@ -170,12 +168,30 @@ class OpenHouseGraph(Graph):
                     continue
                 else:
                     trip = self.visit_next(next_vertex, current_time_2, visited = visited)
-                    if (trip not in entire_trip) and np.array(trip).shape[0] > 0:
-                        entire_trip += [trip]
+                    try:
+                        if isinstance(trip[0], list):
+                            for t in trip:
+                                print(t)
+                                if len(t) > 0:
+                                    entire_trip += [t]
+                        elif (trip not in entire_trip) and len(trip) > 0:
+                            entire_trip += [trip]
+                    except:
+                        pass
         else:
     #         hours, minutes = self.convert_mins_to_time(current_time)
-            return visited
-        return entire_trip
+            return self.flatten(visited)
+        return self.flatten(entire_trip)
+
+    def flatten(self, trips):
+        results = []
+        for i in range(len(trips)):
+            if isinstance(trips[i], int):
+                return trips
+            else:
+                if len(trips[i]) > 0:
+                    results += [trips[i]]
+        return results
 
     def get_acyclic_edges(self, edges, visited):
         """
@@ -241,18 +257,21 @@ if __name__ == "__main__":
     
     locations = []
     mops = MongoOps()
-    sample_data_files = [f for f in listdir("/data") if isfile(join("/data", f))]
+    sample_data_files = [f for f in listdir("/data") if isfile(join("/data", f)) and f != '.DS_Store' ]
     for open_house_file in sample_data_files:
-        parser = ICSParser("/data/%s" % open_house_file)
-        event = parser.to_dict()
-        # print(event)
-        result = mops.safe_query_for_location_info(event)
-        locations += [result]
+        try:
+            parser = ICSParser("/data/%s" % open_house_file)
+            event = parser.to_dict()
+            result = mops.safe_query_for_location_info(event)
+            locations += [result]
+        except:
+            pass
 
     random_locations = random_combination(locations, 7)
     DM = DirectionsMatrix(random_locations, mops)
     DM.generate_simplified_directions_matrix()
     sdm = DM.simplified_directions_matrix
+
 
     # Showing off EST/EDT time of day of the open houses and the conversion to minutes from midnight that day
     for i in range(len(sdm)):
@@ -260,7 +279,6 @@ if __name__ == "__main__":
         start_minutes = 6./10*start
         end = int(sdm[i]['dtend'][9:-3])-600
         end_minutes = 6./10*end
-        print('%d (%f), %d (%f)' % (start, start_minutes, end, end_minutes))
         start = sdm[i]['start'] = start
         start_minutes = sdm[i]['start_minutes'] = start_minutes
         end = sdm[i]['end'] = end
@@ -272,7 +290,8 @@ if __name__ == "__main__":
                 'start' : sdm[i]['start_minutes'], 
                 'end' : sdm[i]['end_minutes'], 
                 'edges' : sdm[i]['durations'],
-                'address_hash' : sdm[i]['address_hash']}
+                'address_hash' : sdm[i]['address_hash'],
+                'address' : sdm[i]['location']['address']}
         vertices += [V]
     ohg = OpenHouseGraph(vertices)
 
@@ -281,16 +300,23 @@ if __name__ == "__main__":
         starting_id = v['ID']
         starting_vertex = ohg.get_vertex_from_vid(starting_id)
         start_time = starting_vertex['start']
-        paths += [ohg.visit_next(starting_vertex, start_time, visited=[])]
-    print(paths)
+        path = ohg.visit_next(starting_vertex, start_time, visited=[])
+        if len(path) > 0:
+            for p in path:
+                if p not in paths:
+                    paths += [p]
     paths = np.array(paths)
-
-    for i in range(len(paths)):
-        print(paths[i])
-        try:
-            paths[i] = np.array(paths[i]).reshape(-1)
-        except:
-            pass
-        print(np.array(paths[i]).shape)
-        
-    print(paths)
+    
+    max_len = max([len(path) for path in paths])
+    print('max_len:', max_len)
+    P = []
+    for path in paths:
+        if len(path) >= max_len:
+            P += [path]
+    print(P)
+    print(vertices)
+    for path in P:
+        print('------------------------- Showing path for {}'.format(path))
+        for p in path:
+            print(vertices[p]['address'])
+    print('\n')

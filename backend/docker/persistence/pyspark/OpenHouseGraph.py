@@ -243,7 +243,7 @@ if __name__ == "__main__":
         except:
             pass
 
-    random_locations = random_combination(locations, 2)
+    random_locations = random_combination(locations, len(locations))
     DM = DirectionsMatrix(random_locations, mops)
     DM.generate_simplified_directions_matrix()
     sdm = DM.simplified_directions_matrix

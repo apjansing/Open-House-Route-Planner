@@ -1,12 +1,13 @@
 # [Open House Route Planner](https://apjansing.github.io/Open-House-Route-Planner/)
 
 # Table of Contents
-1. [Inspiration](#inspiration)
-2. [Application](#Application)
-   1. [Backend](#Backend)
-   2. [Frontend](#Frontend)
-3. [Resources](#Resources)
-4. [Contributors to initial codebase](#Contributors-to-initial-codebase)
+- [Inspiration](#Inspiration)
+- [Application](#Application)
+   - [Backend](#Backend)
+   - [Frontend](#Frontend)
+- [Resources](#Resources)
+- [Dependencies](#Dependencies)
+- [Contributors to initial codebase](#Contributors-to-initial-codebase)
 
 # Inspiration
 I have been looking for houses. When I add open houses to my Google Calendar, I am able to request direction to whatever house is open next in time, but I was thinking…
@@ -95,6 +96,13 @@ TODO
 
 ## Mathematics
 I have described this problem to many people and almost everyone thinks it is just the <a href="https://www.wikiwand.com/en/Travelling\_salesman\_problem" target="_blank">Traveling Salesman Problem</a> (TSP), but I prefer to think of it as a <a href="https://www.wikiwand.com/en/Hamiltonian_path_problem" target="_blank">Hamiltonian cycle problem</a> or some form of <a href="https://www.wikiwand.com/en/Travelling_salesman_problem#/Metric_TSP" target="_blank">Metric TSP</a>.
+
+# Dependencies
+| Name                   | Version | Link                                     |
+| :--------------------- | :------ | :--------------------------------------- |
+| Docker                 | 18.09.2 | https://docs.docker.com/install/         |
+| docker-compose         | 1.23.2  | https://docs.docker.com/compose/install/ |
+| Esri Developer Account | N/A     | https://developers.arcgis.com/           |
 
 # Contributors to initial codebase
 I would like to acknowledge the initial help I received in starting this project to those listed below. I refer to their LinkedIn pages as I do not have all of their GitHub profiles available.

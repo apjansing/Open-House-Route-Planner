@@ -102,10 +102,10 @@ class Graph(object):
         edges = []
         for neighbour in vertex['edges']:
             weight = neighbour[1]
-            neighbour = neighbour[0]
+            n = neighbour[0]
             v = vertex['ID']
-            if (neighbour, vertex, weight) not in edges:
-                edges.append([v, neighbour, weight])
+            if [v, n, weight] not in edges:
+                edges.append([v, n, weight])
         return edges
     
     def __str__(self):
@@ -131,57 +131,33 @@ class OpenHouseGraph(Graph):
     https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2
     """
 
-    def visit_next(self, current_vertex, arrival_time, average_time_at_each_house = 30, visited = []):
+    def visit_next(self, current_vertex, arrival_time, visited, trip = [], average_time_at_each_house = 30):
         """
         Recursive function, given by a starting vertex, iterate over outbound 
         edges to travel to every house and determine what the time would be
         after getting to a destination. 
         """
-        entire_trip = []
-        current_time = arrival_time
-        idx = current_vertex['ID']
-    #     print('Arrived at vertex %d at time %f' % (idx, arrival_time))
-        if idx in visited:
-            return visited
-        else:
-            visited += [idx]
-        current_time += average_time_at_each_house
-        
-    #     print('Leaving at vertex %d at time %f' % (idx, current_time))
-        
-        edges = self.get_edges(current_vertex)
-        acyclic_edges = self.get_acyclic_edges(edges, visited)
-        
-        if len(acyclic_edges) > 0:
-            for edge in acyclic_edges:
-                next_vertex = self.get_vertex_from_vid(edge[1])
-                time_at_next_vertex = current_time + edge[2]
-                
-                '''
-                Check if the Open house has started yet, and wait for it to open
-                if it hasn't closed yet.
-                '''
-                opened, closed = self.open_and_closed(time_at_next_vertex, next_vertex)
-                wait_function = self.get_wait_function(opened, closed)
-                time_at_next_vertex = wait_function(next_vertex['start'], time_at_next_vertex)
-                if time_at_next_vertex < 0:
-                    continue
-                else:
-                    trip = self.visit_next(next_vertex, time_at_next_vertex, visited = visited)
-                    try:
-                        if isinstance(trip[0], list):
-                            for t in trip:
-                                print(t)
-                                if len(t) > 0:
-                                    entire_trip += [t]
-                        elif (trip not in entire_trip) and len(trip) > 0:
-                            entire_trip += [trip]
-                    except:
-                        pass
-        else:
-    #         hours, minutes = self.convert_mins_to_time(current_time)
-            return self.flatten(visited)
-        return self.flatten(entire_trip)
+        acyclic_edges = self.get_acyclic_edges(self.get_edges(current_vertex), visited)
+        for a_edge in acyclic_edges:
+            
+            # Determine when you leave at the next house.
+            departure_time = arrival_time + average_time_at_each_house
+
+            # Determine when you 'arrive' at the next house.
+            next_arrival_time = departure_time + a_edge[2]
+
+            idx = a_edge[1]
+            a_vertex = self.get_vertex_from_vid(idx)
+            opened, closed = self.open_and_closed(next_arrival_time, a_vertex)
+            wait_function = self.get_wait_function(opened, closed)
+            next_arrival_time = wait_function(a_vertex['start'], next_arrival_time)
+
+            # If you're not too late, continue with this path
+            if next_arrival_time > 0:
+                step = visited + [idx]
+                trip += self.visit_next(a_vertex, next_arrival_time, step)
+        return [visited] if len(visited) > 1 else trip
+
 
     def flatten(self, trips):
         results = []
@@ -267,7 +243,7 @@ if __name__ == "__main__":
         except:
             pass
 
-    random_locations = random_combination(locations, 7)
+    random_locations = random_combination(locations, 2)
     DM = DirectionsMatrix(random_locations, mops)
     DM.generate_simplified_directions_matrix()
     sdm = DM.simplified_directions_matrix
@@ -275,14 +251,13 @@ if __name__ == "__main__":
 
     # Showing off EST/EDT time of day of the open houses and the conversion to minutes from midnight that day
     for i in range(len(sdm)):
-        start = int(sdm[i]['dtstart'][9:-3])-600
-        start_minutes = 6./10*start
-        end = int(sdm[i]['dtend'][9:-3])-600
-        end_minutes = 6./10*end
-        start = sdm[i]['start'] = start
-        start_minutes = sdm[i]['start_minutes'] = start_minutes
-        end = sdm[i]['end'] = end
-        end_minutes = sdm[i]['end_minutes'] = end_minutes
+        start = str(int(sdm[i]['dtstart'][9:-3])-400)
+        start_minutes = int(start[:-2])*60 + int(start[-2:])
+        end = str(int(sdm[i]['dtend'][9:-3])-400)
+        end_minutes = int(end[:-2])*60 + int(end[-2:])
+        sdm[i]['start_minutes'] = start_minutes
+        sdm[i]['end_minutes'] = end_minutes
+    
     vertices = []
     V = None
     for i in range(len(sdm)):
@@ -300,12 +275,14 @@ if __name__ == "__main__":
         starting_id = v['ID']
         starting_vertex = ohg.get_vertex_from_vid(starting_id)
         start_time = starting_vertex['start']
-        path = ohg.visit_next(starting_vertex, start_time, visited=[])
+        path = ohg.visit_next(starting_vertex, start_time, [starting_id])
         if len(path) > 0:
             for p in path:
                 if p not in paths:
                     paths += [p]
     paths = np.array(paths)
+
+    pprint(paths)
     
     max_len = max([len(path) for path in paths])
     print('max_len:', max_len)
@@ -314,7 +291,7 @@ if __name__ == "__main__":
         if len(path) >= max_len:
             P += [path]
     print(P)
-    print(vertices)
+    pprint(vertices)
     for path in P:
         print('------------------------- Showing path for {}'.format(path))
         for p in path:

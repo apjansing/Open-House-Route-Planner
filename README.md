@@ -1,13 +1,13 @@
 # [Open House Route Planner](https://apjansing.github.io/Open-House-Route-Planner/)
 
 # Table of Contents
-- [Inspiration](#Inspiration)
-- [Application](#Application)
-   - [Backend](#Backend)
+- [Inspiration](#inspiration)
+- [Application](#application)
+   - [Backend](#backend)
    - [Frontend](#frontend)
-- [Resources](#Resources)
-- [Dependencies](#Dependencies)
-- [Contributors to initial codebase](#Contributors-to-initial-codebase)
+- [Resources](#resources)
+- [Dependencies](#dependencies)
+- [Contributors to initial codebase](#contributors-to-initial-codebase)
 
 # Inspiration
 I have been looking for houses. When I add open houses to my Google Calendar, I am able to request direction to whatever house is open next in time, but I was thinking…

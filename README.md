@@ -4,7 +4,7 @@
 - [Inspiration](#Inspiration)
 - [Application](#Application)
    - [Backend](#Backend)
-   - [Frontend](#Frontend)
+   - [Frontend](#frontend)
 - [Resources](#Resources)
 - [Dependencies](#Dependencies)
 - [Contributors to initial codebase](#Contributors-to-initial-codebase)

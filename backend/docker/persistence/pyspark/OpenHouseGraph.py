@@ -7,7 +7,7 @@ from MongoOps import MongoOps
 from ICSParser import ICSParser
 from make_directions_matrix import DirectionsMatrix
 import random
-
+import time
 
 def random_combination(iterable, r):
     '''
@@ -17,7 +17,6 @@ def random_combination(iterable, r):
     n = len(pool)
     indices = sorted(random.sample(range(n), r))
     return tuple(pool[i] for i in indices)
-
 
 class Graph(object):
     """ 
@@ -270,6 +269,9 @@ if __name__ == "__main__":
         vertices += [V]
     ohg = OpenHouseGraph(vertices)
 
+    ### TICK ###
+    start = time.time()
+
     paths = []
     for v in ohg.vertices():
         starting_id = v['ID']
@@ -280,20 +282,24 @@ if __name__ == "__main__":
             for p in path:
                 if p not in paths:
                     paths += [p]
+    
+    ### TOCK ###
+    end = time.time()
+
     paths = np.array(paths)
 
-    pprint(paths)
-    
     max_len = max([len(path) for path in paths])
-    print('max_len:', max_len)
     P = []
     for path in paths:
         if len(path) >= max_len:
             P += [path]
-    print(P)
+
     pprint(vertices)
     for path in P:
         print('------------------------- Showing path for {}'.format(path))
         for p in path:
             print(vertices[p]['address'])
     print('\n')
+
+    print('''Given {} locations, Open House routing calculations took {} seconds to execute.
+    The maximum number of houses that could be visited was {}.'''.format(len(locations), end - start, max_len))

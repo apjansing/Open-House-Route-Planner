@@ -3,9 +3,8 @@
 # Table of Contents
 - [Inspiration](#inspiration)
 - [Application](#application)
-   - [Backend](#backend)
-   - [Frontend](#frontend)
-- [Resources](#resources)
+ - [Backend](#backend)
+ - [Frontend](#frontend)
 - [Dependencies](#dependencies)
 - [Contributors to initial codebase](#contributors-to-initial-codebase)
 
@@ -51,55 +50,36 @@ The maximum number of houses that could be visited was 6.
 This output was provided by the test function within the `OpenHouseRouting` class.
 
 
-# Technologies
-## Databases
+### Technologies
+#### Databases
  * MongoDB - for simplified storage of data during the ETL process.
-## Frameworks
+#### Frameworks
  * Flask - for providing an endpoint for the program's location data to be parsed and performing queries to the Esri Developer API. 
-## Support
+#### Support
  * Docker - for compartmentalization of the work. In addition to making the work more portable, containers also provide a convenient way of breaking a problem down into its simplest parts.
  * Docker-compose - to put the containers on the same network and so each container can call the others out by name.
 
 
-# Resources
-## APIs
-### Backend
+#### Resources
+##### APIs
 * <a href="https://developers.arcgis.com/python/" target="_blank">Python ArcGIS API</a>
 * <a href="https://developers.arcgis.com/" target="_blank">ArcGIS Developer</a>
-### Frontend
-* <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment" target="_blank">Setting up a Node development environment</a>
-* <a href="https://github.com/Esri/node-arcgis" target="_blank">Esri/node-arcgis</a>
-* <a href="https://github.com/Esri/arcgis-rest-js" target="_blank">Esri/arcgis-rest-js</a>
 
-### External Code and Research
-<!-- I have described this problem to many people and almost everyone thinks it is just the <a href="https://www.wikiwand.com/en/Travelling\_salesman\_problem" target="_blank">Traveling Salesman Problem</a> (TSP), but I prefer to think of it as a <a href="https://www.wikiwand.com/en/Hamiltonian_path_problem" target="_blank">Hamiltonian cycle problem</a> or some form of <a href="https://www.wikiwand.com/en/Travelling_salesman_problem#/Metric_TSP" target="_blank">Metric TSP</a>. -->
+##### External Code and Research
 A Python graph class from https://www.python-course.eu/graphs_python.php. Changes to include weighted edges from https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2 and additional modification to the author's adaptation that I didn't agree with.
 
 
-### [Frontend](https://apjansing.github.io/Open-House-Route-Planner/frontend/)
+# [Frontend](https://apjansing.github.io/Open-House-Route-Planner/frontend/)
 TODO
-
-
-# Resources
-
-## Version Control
-* <a href="https://github.com/apjansing/Open-House-Route-Planner" target="_blank">apjansing/Open-House-Route-Planner</a>
-
-## Planning
-* <a href="https://trello.com/b/q1hinbru" target="_blank">Trello - Open House Route Planner</a>
-
-## APIs
+#### Resources
+##### APIs
 * <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment" target="_blank">Setting up a Node development environment</a>
 * <a href="https://github.com/Esri/node-arcgis" target="_blank">Esri/node-arcgis</a>
 * <a href="https://github.com/Esri/arcgis-rest-js" target="_blank">Esri/arcgis-rest-js</a>
-* <a href="https://developers.arcgis.com/" target="_blank">ArcGIS Developer</a>
-
-## Mathematics
-I have described this problem to many people and almost everyone thinks it is just the <a href="https://www.wikiwand.com/en/Travelling\_salesman\_problem" target="_blank">Traveling Salesman Problem</a> (TSP), but I prefer to think of it as a <a href="https://www.wikiwand.com/en/Hamiltonian_path_problem" target="_blank">Hamiltonian cycle problem</a> or some form of <a href="https://www.wikiwand.com/en/Travelling_salesman_problem#/Metric_TSP" target="_blank">Metric TSP</a>.
 
 # Dependencies
 | Name                   | Version | Link                                     |
-| :--------------------- | :------ | :--------------------------------------- |
+| ---------------------- | ------- | ---------------------------------------- |
 | Docker                 | 18.09.2 | https://docs.docker.com/install/         |
 | docker-compose         | 1.23.2  | https://docs.docker.com/compose/install/ |
 | Esri Developer Account | N/A     | https://developers.arcgis.com/           |

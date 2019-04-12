@@ -24,7 +24,8 @@ I have a limited number of Esri Developer Credits and I want to limit the number
 
 ##### Justification
 When thinking about spending a day visiting open houses, you might be lucky to have enough time in the day to visit 7 or 8 houses. With that in mind, my approach is close to a brute force strategy for solving the routing problem. Since the number of houses you can visit is fairly finite, brute force does not take all that long. 
-###### An example of how long it might take to find a series of routes 
+
+###### An example of how long it might take to find a series of routes
 ```
 Given 10 locations, Open House routing calculations took 0.04648470878601074 seconds to execute.
 The maximum number of houses that could be visited was 6.
@@ -42,16 +43,10 @@ This output was provided by the test function within the `OpenHouseRouting` clas
  * Docker-compose - to put the containers on the same network and so each container can call the others out by name.
 
 
-## Resources
-### APIs
-#### Backend
+#### Resources
+##### APIs
 * <a href="https://developers.arcgis.com/python/" target="_blank">Python ArcGIS API</a>
 * <a href="https://developers.arcgis.com/" target="_blank">ArcGIS Developer</a>
-#### Frontend
-* <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/development_environment" target="_blank">Setting up a Node development environment</a>
-* <a href="https://github.com/Esri/node-arcgis" target="_blank">Esri/node-arcgis</a>
-* <a href="https://github.com/Esri/arcgis-rest-js" target="_blank">Esri/arcgis-rest-js</a>
 
-### External Code and Research
-<!-- I have described this problem to many people and almost everyone thinks it is just the <a href="https://www.wikiwand.com/en/Travelling\_salesman\_problem" target="_blank">Traveling Salesman Problem</a> (TSP), but I prefer to think of it as a <a href="https://www.wikiwand.com/en/Hamiltonian_path_problem" target="_blank">Hamiltonian cycle problem</a> or some form of <a href="https://www.wikiwand.com/en/Travelling_salesman_problem#/Metric_TSP" target="_blank">Metric TSP</a>. -->
+##### External Code and Research
 A Python graph class from https://www.python-course.eu/graphs_python.php. Changes to include weighted edges from https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2 and additional modification to the author's adaptation that I didn't agree with.

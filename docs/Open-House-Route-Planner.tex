@@ -13,11 +13,11 @@
 
 %  margins
 \textwidth = 6.5 in 
-\textheight = 9 in 
+\textheight = 9 in
 \oddsidemargin = 0.0 in 
 \evensidemargin = 0.0 in 
 \topmargin = 0.0 in 
-\headheight = 0.0 in 
+\headheight = 0.0 in
 \headsep = 0.0 in 
 
 %  theorems, corollaries, etc.
@@ -200,7 +200,7 @@
 \makeatother
 
 % show labels in margin (must be last package added)
-\usepackage{showlabels}
+% \usepackage{showlabels}
 
 % input information for the title page here:
 \preprint{}
@@ -219,35 +219,92 @@
 Consectetur sit aliquip pariatur anim et proident nisi mollit labore exercitation sunt exercitation fugiat.
 }
 \msc{}{}
-
 \begin{document}
 \maketitle
+%%%%%%%%%SECTION%%%%%%%%%
+
 \section{Introduction}
 \subsection{Motivation}
 I have been looking for houses. When I add open houses to my Google Calendar, I am able to request direction to whatever house is open next in time, but I was thinking
 
-Last year, I had been looking for a house and was trying to visit as many open houses as I could. I noticed that, unless I was looking at houses that were fairly close to eac other, I needed to put some thought into:
-\begin{enumerate}
-  \item which house I was interested in,
+Over the last year, I had been looking for a house and was trying to visit as many open houses as I could. So the question became, \emph{``What if two houses are significantly far apart, open at similar times, and there are other houses in each of their respective neighborhoods that open at different times? Is there a way I can plan my day of house hunting so that I can attend all of the open houses?''} The answer to this question is, ``yes, within reason.''
+
+\subsection{Objective}
+Given a series of open houses the application should find routes that will allow the user to visit the maximum number of open houses given the constraints of \emph{travel time} and \emph{when the open houses are open}.
+
+After phrasing stating the problem, the problem was divided up into several part:
+\begin{itemize}
   \item where the houses were with respect to each other,
   \item when the open houses were,
   \item and try to determine the path I needed to take to visit as many open houses as possible.
-\end{enumerate}
-So the question became, ``What if two houses are significantly far apart, open at similar times, and there are other houses in each of their respective neighborhoods that open at different times? Is there a way I can plan my day of house hunting so that I can attend all of the open houses?''
+\end{itemize}
 
-The answer to this question is, ``yes, within reason.''
+I will describe how each of these tasks were accomplished and what other work needed to be done to facilitate that work.
 
-\subsection{Objective}
-Provide a series of open houses and the application will find a route that will allow the user to visit the maximum number of open houses given the constraints of travel time between locations and when the open houses are open.
+%%%%%%%%%SECTION%%%%%%%%%
 
+\section{Requirements}
+As with most projects, a bit of legwork is involved before even starting the main problem. Before routes can be derived from the data, we need to know
+\begin{itemize}
+  \item what kind of data the system will accept,
+  \item what kind of ETL (Extraction, Transformation, and Loading) processes will need to occur,
+  \item if/how there data will be cached,
+  \item and how might we will we compute routes?
+\end{itemize}
 
+\subsection{ETL}
+As for the first three points, the following describe what kind of data the program accepts, its transformation, and how there data is cached.
 
+\subsubsection{Extraction}
+Data extraction was performed manually as it seems that many realestate sites did not want to hand over data programatically; or if they did the purchase of an API key was required. The data used for this project was sourced from Trulia\cite{Trulia} in the form of ICS files\cite{ICS}.
 
+\subsubsection{Transformation}
+Open House data is typically provided with in a human readable format with an address written like ``100 Seymour Ave, Utica, NY 13502'' and times provided in the form "10AM to 12PM." These forms of data need to be handled somehow. Luckily, when downloading calendar data the time data comes in ISO 8601 Notation (\emph{\ie} yyyymmddThhmmssZ).
 
+That just leaves the address to be \emph{geocoded}; the process of converting addresses to a coordinate system. The ArcGIS Developer API provides an easy way to geocode address data. This process will be described in the section \ref{geocoding} along with all the other transformations required to consistently gather and use data.
+ 
+\subsubsection{Loading}
+To avoid having to query the ArcGIS API repeated and spending the credits that was required\cite{ArcGIS}, the data is stored in a MongoDB instance. This not only helps the program be more economically efficient, but cuts down on latency during testing and future delivery.
+
+\subsection{Computation}
+
+When the project was started, it was thought that Spark could be used to perform graph processing\cite{SPARK}. Later on, it was decided that the graphs were not going to be large enough to have to worry about optimizing the processing. A graph data structure was still used for handing the data when the time came to computing routes\cite{Agarwal}. The vertices were given IDs, 
+
+%%%%%%%%%SECTION%%%%%%%%%
+\section{Preprocessing}
+
+\subsection{Geocoding} \label{geocoding}
+Assuming the user has found houses they wish to visit, there is some information we already have
+
+%%%%%%%%%SECTION%%%%%%%%%
 
 \newpage
 \begin{thebibliography}{99}
 
+\bibitem{Agarwal}
+Agarwal, R. (2019). To all Data Scientists - The one Graph Algorithm you need to know. [online] Towards Data Science. Available at: \url{https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2} [Accessed 13 Apr. 2019].
+
+\bibitem{PYArcGIS}
+ArcGIS for Developers. (2019). ArcGIS API for Python | ArcGIS for Developers. [online] Available at: \url{https://
+developers.arcgis.com/python/} [Accessed 13 Apr. 2019].
+
+\bibitem{ArcGIS}
+ArcGIS for Developers. (2019). ArcGIS for Developers. [online] Available at: \url{https://developers.arcgis.com/} [Accessed 13 Apr. 2019].
+
+\bibitem{ICS}
+Wikiwand. (2019). iCalendar | Wikiwand. [online] Available at: \url{https://www.wikiwand.com/en/ICalendar} [Accessed 13 Apr. 2019].
+  
+\bibitem{DOCKER}
+Docker Documentation. (2019). About Docker CE. [online] Available at: \url{https://docs.docker.com/install/} [Accessed 13 Apr. 2019].
+
+\bibitem{DC}
+Docker Documentation. (2019). Install Docker Compose. [online] Available at: \url{https://docs.docker.com/compose/install/} [Accessed 13 Apr. 2019].
+  
+\bibitem{SPARK}
+Spark.apache.org. (2019). GraphX | Apache Spark. [online] Available at: \url{https://spark.apache.org/graphx/} [Accessed 13 Apr. 2019].
+
+\bibitem{Trulia}
+Trulia. (2019). Trulia: Real Estate Listings, Homes for Sale, Housing Data. [online] Available at: \url{https://www.trulia.com/} [Accessed 13 Apr. 2019].
 \end{thebibliography}
 \end{document}
 

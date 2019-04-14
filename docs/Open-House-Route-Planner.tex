@@ -7,9 +7,10 @@
 
 %  packages
 \usepackage{amssymb, amsmath, amsthm, enumerate, graphicx, multirow, float, color, xcolor}
-\usepackage{tikz}
+\usepackage{tikz, standalone}
 \usepackage{hyperref}
 \usetikzlibrary{arrows}
+\usetikzlibrary{graphs,quotes}
 
 %  margins
 \textwidth = 6.5 in 
@@ -270,7 +271,14 @@ To avoid having to query the ArcGIS API repeated and spending the credits that w
 \subsection{Infrastructure}
 Docker is a modern technology that helps facilitate rapid prototyping, development, and compartmentalization of development of projects \cite{DOCKER}. Docker, and subsequently docker-compose\cite{DC}, was used on this project to set up network on systems that could easily be deployed on a cloud service. 
 
-This docker-compose network consisted of three containers to perform computation, query ArcGIS API, and data caching (see Appendix \ref{docker-images} for images used respective order).
+This docker-compose network consisted of three containers to query ArcGIS API, store geocoded data, and perform computation on graph data structure; esri, mongo, and routefinder, respectively (see Figure \ref{docker-compose-network-diagram} and Appendix \ref{docker-images}).
+\begin{figure}
+\begin{center}
+    \includestandalone[width=10cm]{tikz/docker-compose}
+    \caption{Docker-compose network diagram.}\label{docker-compose-network-diagram}
+  \end{center}
+\end{figure}
+
 
 \subsection{Computation}
 
@@ -280,7 +288,10 @@ When the project was started, it was thought that Spark could be used to perform
 \section{Preprocessing}
 
 \subsection{Geocoding} \label{geocoding}
-Given a directory holding $n$ ICS files downloaded from Trulia, as per section \ref{E}, the data is parsed 
+Given a directory holding $n$ ICS files downloaded from Trulia, as per section \ref{E}, the data is parsed by the ICSParser (\ref{code}) and the address information is \emph{safely geocoded} (querying for existence in MongoDB, otherwise querying ArcGIS API for information) by MongoOps and a Flask REST endpoint \cite{Flask}.
+
+
+%%%%%%%%%SECTION%%%%%%%%%
 
 %%%%%%%%%SECTION%%%%%%%%%
 
@@ -289,33 +300,35 @@ Given a directory holding $n$ ICS files downloaded from Trulia, as per section \
 \subsection{Resources}
 \subsubsection{Docker Images}\label{docker-images}
 \begin{itemize}
-  \item \href{https://hub.docker.com/r/jupyter/pyspark-notebook}{jupyter/pyspark-notebook:7254cdcfa22b}\cite{img-pyspark}
-  \item \href{https://hub.docker.com/r/esridocker/arcgis-api-python-notebook}{esridocker/arcgis-api-python-notebook:1.5}\cite{img-esri}
-  \item \href{https://hub.docker.com/_/mongo}{mongo:4.1}\cite{img-mongo}
+  \item \href{https://hub.docker.com/r/jupyter/pyspark-notebook}{jupyter/pyspark-notebook:7254cdcfa22b}\cite{img-pyspark} - container renamed \emph{routefinder}.
+  \item \href{https://hub.docker.com/r/esridocker/arcgis-api-python-notebook}{esridocker/arcgis-api-python-notebook:1.5}\cite{img-esri} - container renamed \emph{esri}.
+  \item \href{https://hub.docker.com/_/mongo}{mongo:4.1}\cite{img-mongo} - container named \emph{mongo}.
 \end{itemize}
 
-\subsection{Code}
+\subsection{Code}\label{code}
 \begin{itemize}
   \item \href{https://github.com/apjansing/Open-House-Route-Planner}{apjansing/Open-House-Route-Planner} - This project.
+  \begin{itemize}
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/ICSParser.py}{ICSParser} - Class for parsing ICS files.
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/MongoOps.py}{MongoOps} - Class for:
     \begin{itemize}
-      \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/ICSParser.py}{ICSParser} - Class for parsing ICS files.
-      \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/MongoOps.py}{MongoOps} - Class for:
-        \begin{itemize}
-          \item loading data to database, 
-          \item querying the database for geocoded address,
-          \item querying the database for directions,
-          \item querying the ArcGIS Developer API for geocoded address,
-          \item and querying the ArcGIS Developer API for directions.
-        \end{itemize}
-      \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/make_directions_matrix.py}{DirectionsMatrix} - Class for creating a matrix of directions data pertaining to locations passed to it. It utilized the MongoOps class to safely query for directions between open houses.
-      \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/OpenHouseGraph.py}{OpenHouseGraph} - A graph data structure used for computing routes one might take while visiting open houses.
-
+      \item loading data to database, 
+      \item querying the database for geocoded address,
+      \item querying the database for directions,
+      \item querying the ArcGIS Developer API for geocoded address,
+      \item and querying the ArcGIS Developer API for directions.
     \end{itemize}
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/make_directions_matrix.py}{DirectionsMatrix} - Class for creating a matrix of directions data pertaining to locations passed to it. It utilized the MongoOps class to safely query for directions between open houses.
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/OpenHouseGraph.py}{OpenHouseGraph} - A graph data structure used for computing routes one might take while visiting open houses.
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/esri/esri_flask.py}{Esri Flask App} - REST endpoint that is designed to accept information from MongoOps and query the ArcGIS Developer API for geocoded address information or directions between two GeoJSON Points.
+  \end{itemize}
   \item \href{https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2}{Data Scientists, The one Graph Algorithm you need to know}\cite{Agarwal} - Basis for the OpenHouseGraph class.
 \end{itemize}
 
-\begin{thebibliography}{99}
+%%%%%%%%%SECTION%%%%%%%%%
 
+\begin{thebibliography}{99}
+  
 \bibitem{Agarwal}
 Agarwal, R. (2019). To all Data Scientists - The one Graph Algorithm you need to know. [online] Towards Data Science. Available at: \url{https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2} [Accessed 13 Apr. 2019].
 
@@ -338,6 +351,9 @@ Docker Documentation. (2019). Install Docker Compose. [online] Available at: \ur
 \bibitem{SPARK}
 Spark.apache.org. (2019). GraphX | Apache Spark. [online] Available at: \url{https://spark.apache.org/graphx/} [Accessed 13 Apr. 2019].
 
+\bibitem{Flask}
+Flask.pocoo.org. (2019). Welcome | Flask (A Python Microframework). [online] Available at: \url{http://flask.pocoo.org/} [Accessed 14 Apr. 2019].
+
 \bibitem{Trulia}
 Trulia. (2019). Trulia: Real Estate Listings, Homes for Sale, Housing Data. [online] Available at: \url{https://www.trulia.com/} [Accessed 13 Apr. 2019].
 
@@ -350,6 +366,7 @@ esridocker/arcgis-api-python-notebook. (2019). \url{https://hub.docker.com/r/esr
 
 \bibitem{img-mongo}
 mongo. (2019). \url{https://hub.docker.com/_/mongo}: MongoDB.
+
 \end{thebibliography}
 \end{document}
 

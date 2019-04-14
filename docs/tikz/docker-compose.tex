@@ -1,0 +1,29 @@
+\documentclass{standalone}
+\usepackage{tikz}
+
+\usetikzlibrary{graphs,quotes}
+\begin{document}
+
+\begin{tikzpicture}
+    \graph [nodes = {rectangle, draw},
+                    circular placement,
+                    radius = 2cm] {
+        ArcGIS API[dashed] <-> Internet[dashed] <-> esri;
+        esri <-> mongo[yshift = 3cm, xshift = 5cm];
+        mongo <-> routefinder[yshift = 3cm, xshift = 5cm];
+
+        mongo <-> database persistence[yshift = 6cm, xshift = 7cm, dotted];
+        esri <-> esri code[yshift = 6cm, xshift = -1.725cm, dotted];
+        routefinder <-> routefinder code[yshift = 1cm, xshift = 5cm, dotted];
+
+    };
+    \node[below of=routefinder] (n2) {- - - External Resource \vspace*{2cm}
+                 ----- Docker Container \vspace*{2cm}
+                 \dots Mounted Volume};
+    \node[below of=mongo, yshift=0.65cm, xshift = 0.65cm] (n2) {\footnotesize port 8000};
+    \node[below of=esri, yshift=0.75cm, xshift = 1cm] (n2) {\footnotesize port 5000};
+    \node[above of=ArcGIS API, yshift=-0.6cm, xshift = -1cm] (n2) {\footnotesize port 443};
+\end{tikzpicture}
+\end{document}
+
+\end{document}

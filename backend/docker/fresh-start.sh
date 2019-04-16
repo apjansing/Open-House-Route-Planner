@@ -6,6 +6,6 @@
 ./install-deps.sh
 
 docker logs esri
-docker logs pyspark
+docker logs routefinder
 
 ./start_flask_apps.sh

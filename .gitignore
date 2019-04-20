@@ -88,6 +88,13 @@ WiredTiger*
 *.fdb_latexmk
 *.fls
 *.synctex.gz
+*.bbl
+*.blg
+*.lof
+*.lot
+*.toc
+*.code.junk
+*.dvi
 
 ## LaTeX minted folder
 docs/_minted-Open-House-Route-Planner/

@@ -1,24 +1,19 @@
-%
-% Elizabeth Wilcox
-% MAT 373: Number Theory
-%
-% \documentclass[11 pt]{article}
-\documentclass[11 pt]{IEEEtran}
+% This is an example manuscript for the SUNY Poly style options
+%       sunypoly_ms.sty (Masters Thesis)
 
+\documentclass[letterpaper,11pt]{report}
+\usepackage{sunypolyms}       % For Master's papers
+\usepackage{ulem}       % underlining on style-page; see \normalem below
+\usepackage{url}	% support for hyperlinks, especially in bibliography
 %  packages
 \usepackage{amssymb, amsmath, amsthm, enumerate, graphicx, multirow, float, color, xcolor}
 \usepackage{tikz, standalone}
 \usetikzlibrary{arrows}
 \usetikzlibrary{graphs,quotes}
-
-%  margins
-\textwidth = 6.5 in 
-\textheight = 9 in
-\oddsidemargin = 0.0 in 
-\evensidemargin = 0.0 in 
-\topmargin = 0.0 in 
-\headheight = 0.0 in
-\headsep = 0.0 in 
+\usepackage[hidelinks]{hyperref}
+\hypersetup{breaklinks=true}
+\urlstyle{same}
+\usepackage{cite}
 
 %  theorems, corollaries, etc.
 \theoremstyle{definition}
@@ -43,18 +38,10 @@
 \def\bbar#1{\overline{#1}}
 
 %  set shortcuts
-% \def\QQ{\mathbb{Q}}
-% \def\ZZ{\mathbb{Z}}
-% \def\RR{\mathbb{R}}
-% \def\CC{\mathbb{C}}
-% \def\NN{\mathbb{N}}
 \def\ket#1{\big|{#1}\big>}
 \def\bra#1{\big<{#1}\big|}
 
 \def\red#1{\textcolor{red}{#1}}
-% \def\br{\beta-reduction}
-% \def\ar{\alpha-reduction}
-% \def\er{\eta-reduction}
 
 % number theory shortcuts
 \def\divides{\big |}
@@ -82,6 +69,9 @@
 \g@addto@macro{\UrlBreaks}{\UrlOrds}
 \makeatother
 
+% Another Code Snippet displayer used to colorize yml properly
+% UNCOMMENT WHEN BEFORE COMMITTING OR PRINTING
+\usepackage{minted}
 
 \usepackage{listings}
 \usepackage{color}
@@ -96,7 +86,7 @@
   belowskip=3mm,
   showstringspaces=false,
   columns=flexible,
-  basicstyle={\tiny\ttfamily},
+  basicstyle={\scriptsize\ttfamily},
   numbers=none,
   numberstyle=\tiny\color{gray},
   keywordstyle=\color{blue},
@@ -109,9 +99,8 @@
   postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}
 }
 
-
 % Phil Parker's DGS packages, some modified
-\usepackage{remexpp,pprroof,dgstpp}
+% \usepackage{remexpp,pprroof,dgstpp}
 
 % other packages
 \usepackage{setspace}
@@ -122,7 +111,7 @@
 \usepackage[T1]{fontenc}
    
 % make reference header the right font size
-\renewcommand\refname{\Large References}
+% \renewcommand\refname{\Large References}
    
 % theorems, remarks, etc using Phil Parker's "remexpp.sty"
 % \newtheorem{theorem}{Theorem}[section]
@@ -198,35 +187,169 @@
 \newcommand{\FF}{\mathbb{F}}
 
 
-\makeatletter
-\newcommand{\ad}[1]{\mathop{\operator@font ad}\nolimits_{#1}}
-\makeatother
 
-% show labels in margin (must be last package added)
-% \usepackage{showlabels}
+% Adjust placement of text frame to match your software and hardware.
+% Usually 1.5in on left, 1in on right and bottom.  You may not need
+% to uncomment this section.  Home printing systems are notorious for
+% incorrectly placed margins due to paper loading and/or slipping
+% problems
+%
+%\addtolength{\oddsidemargin}{.2in}
+%    \setlength{\evensidemargin}{\oddsidemargin}
+%\addtolength{\topmargin}{-.1in}
 
-% input information for the title page here:
-\preprint{}
+
+% May want theorems numbered by chapter
+\newtheorem{theorem}{Theorem}[chapter]
+
+% Put the title, author, and date in. 
 \title{Open House Route Planner}
 \author{Alexander Jansing}
-\address{
-   Computer Science Department\\
-   State University of New York,\\
-   Polytechnic Institute\\
-   Utica, NY 13502\\
-   USA\\
-   \textsf{jansina@sunypoly.edu}
-}
-\date{\today}
-\abstract{
-Consectetur sit aliquip pariatur anim et proident nisi mollit labore exercitation sunt exercitation fugiat.
-}
-\msc{}{}
-\begin{document}
-\maketitle
-%%%%%%%%%SECTION%%%%%%%%%
+\date{\today} % date is the date of graduation
 
-\section{Introduction}
+% List previous degrees here, one \previousdegree for each degree.
+%\previousdegree{M.A., University of Nebraska--Lincoln, 1984}
+\previousdegree{B.S., SUNY Oswego, 2015}
+
+% Put the Thesis Adviser here. 
+\advisor{Jorge Novillo}
+
+
+% Put the committee here (including the adviser), one \professor for each. 
+% The advisor must be SECOND!!!, and the dean must be LAST!!!.
+\professor{PLACEHOLDER\\
+Professor\\
+Department of Computer Science}
+
+\professor{Jorge Novillo\\
+Professor \\
+Department of Computer Science}
+
+\professor{PLACEHOLDER\\
+Professor \\
+Department of Computer Science}
+
+\professor{PLACEHOLDER\\
+Dean\\
+College of Engineering}
+
+
+
+% Information for style-page
+% Note: Due to the way underlining is handled, any "extra" braces here will
+% create a box which cannot be broken across lines. The \style argument below
+% shows how emphasis should be done.
+
+\style{Journal of Approximation Theory (together with the style known as
+``sunypolyms'').  Bibliography follows van Leunen's {\it A} {\it Handbook}
+{\it for} {\it Scholars}.}
+
+
+\software{The document preparation package \TeX{} (specifically \LaTeX2e)
+together with the style-file {\tt sunypolyms.sty}.}
+
+
+
+\begin{document}
+
+% Uncomment the "nocite" line to have all entries in your bibliography listed,
+% regardless of whether they were cited.  This is often helpful in discovering
+% you had not referenced a source you intended, especially if, like me,
+% you add useful sources to your bibliography file as you discover them.  If
+% you don't add sources to your bibliography until you write text that cites
+% them, you may never need this line.
+%
+\nocite{*}
+
+\begin{romanpages}      % roman-numbered pages 
+    \ApprovalPage   % May comment-out until final version.
+    \TitlePage 
+    \CopyrightPage  % Should do nothing for Ph.D., if the degree is ever offered
+    
+    % This should be a paragraph-style history of your academic work and
+    % industry efforts that may have contributed to your reaching this
+    % stage in your academic career.  
+    %
+    % Note that this is a special chapter style that must begin and end 
+    % the "vita" LaTeX environment.
+    %
+    \input{vita.tex}
+    
+    % This should be a very high level overview of the novel work presented
+    % in your manuscript.  Experiments should be outlined with the utmost brevity
+    % and only their most compelling results revealed.  Often the results
+    % identified here will lack numeric values which are saved for the Introduction
+    % chapter. 
+    %
+    % Note that this is a special chapter style that must begin and end 
+    % the "abstract" LaTeX environment.
+    %
+    \input{abstract.tex}
+    
+    % Acknowledge and dedicate you work to whomever you wish.  It is common to
+    % identify those who significantly advised your work by name and at least 
+    % recognize your advisory committee as a whole.  This chapter is personal, 
+    % however, so a simple "R.I.P. Johhny Cash" is completely acceptable.
+    %
+    % Note that this is a special chapter style that must begin and end 
+    % the "acknowledgments" LaTeX environment.
+    %
+    \input{acknowledgments.tex}
+    
+    \StylePage
+    \tableofcontents
+    
+    % comment either of the following lines should your manuscript contain no 
+    % figures or tables
+    %
+    \listoffigures
+    \listoftables
+    
+\end{romanpages}        % All done with roman-numbered pages
+
+
+\normalem       % Make italics the default for \em
+
+
+% Introduction ((((( required! )))))
+%
+%\input{introduction.tex}
+
+% Related work ((((( required! )))))
+%
+%\input{related_work.tex}
+
+% Statement of the problem
+%
+%\input{problem.tex}
+
+% How you attempted to solve the problem
+%
+%\input{solution.tex}
+
+% Implementations of your solution
+%
+%\input{implementations.tex}
+
+% How did you determine whether you solved the problem
+%
+%\input{experiments.tex}
+
+% What ascpects of the problem did you solve or not solve? ((((( !REQUIRED! ))))) 
+% What are the anticipated benefits of this? ((((( !REQUIRED! ))))) 
+%
+%\input{conclusions.tex}
+
+% NEXT STEPS SHOULD SOMEONE CONTINUE THIS WORK ((((( required! )))))
+%
+%\include{future_work.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% REMOVE THIS SECTION WHEN PREPARING YOUR OWN MANUSCRIPT AND WRITE %
+%          THE FILES NEEDED TO MEET THE ABOVE ORGANIZATION         % 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter{Open House Routing Planner}
 \subsection{Motivation}
 I have been looking for houses. When I add open houses to my Google Calendar, I am able to request direction to whatever house is open next in time, but I was thinking
 
@@ -271,12 +394,12 @@ That just leaves the address to be \emph{geocoded}; the process of converting ad
 To avoid having to query the ArcGIS API repeated and spending the credits that was required\cite{ArcGIS}, the data is stored in a MongoDB instance. This not only helps the program be more economically efficient, but cuts down on latency during testing and future delivery.
 
 \subsection{Infrastructure}
-Docker is a modern technology that helps facilitate rapid prototyping, development, and compartmentalization of development of projects \cite{DOCKER}. Docker, and subsequently docker-compose\cite{DC}, was used on this project to set up network on systems that could easily be deployed on a cloud service. 
+Docker is a container platform that helps facilitate rapid prototyping, development, and compartmentalization of development of projects \cite{DOCKER}. Docker, and subsequently docker-compose\cite{DC}, was used on this project to set up network on systems that could easily be deployed on a cloud service. 
 
 This docker-compose network consisted of three containers to query ArcGIS API, store geocoded data, and perform computation on graph data structure; esri, mongo, and routefinder, respectively (see Figure \ref{docker-compose-network-diagram} and Appendix \ref{docker-images}).
 \begin{figure}[!htb]
   \begin{center}
-      \includestandalone[width=7cm]{tikz/docker-compose}
+      \includestandalone[width=9cm]{tikz/docker-compose}
       \caption{Docker-compose network diagram.}\label{docker-compose-network-diagram}
     \end{center}
 \end{figure}
@@ -332,7 +455,6 @@ Given a directory of $n$ ICS files (as per section \ref{E}) the data is parsed b
   \end{center}
 \end{figure}
 
-Gathering directions between locations follows in a similar manner. After the $n$ ICS files have been parsed into data that looks like Figure \ref{location1_data}, the same Flask app has another REST endpoint to accept two locations and return the directions, along with estimated durations as each step (see Figure \ref{location1_location2_directions}).
 
 \begin{figure}
   \begin{center}
@@ -343,105 +465,30 @@ Gathering directions between locations follows in a similar manner. After the $n
   \end{center}
 \end{figure}
 
+Gathering directions between locations follows in a similar manner. After the $n$ ICS files have been parsed into data that looks like Figure \ref{location1_data}, the same Flask app has another REST endpoint to accept two locations and return the directions, along with estimated durations as each step (see Figure \ref{location1_location2_directions}).
+
 And at every point, when data has been geocoded (i.e. Figures \ref{location1_data} and \ref{location1_location2_directions}) that data is saved in an easily retrievable fashion via unique constructable hashes based on the location(s)' address(es)'s.
 
-%%%%%%%%%SECTION%%%%%%%%%
-
-%%%%%%%%%SECTION%%%%%%%%%
-
-\newpage
-\section{Appendix}
-\subsection{Resources}
-\subsubsection{Docker Images}\label{docker-images}
-\begin{itemize}
-  \item \href{https://hub.docker.com/r/jupyter/pyspark-notebook}{jupyter/pyspark-notebook:7254cdcfa22b}\cite{img-pyspark} - container renamed \emph{routefinder}.
-  \item \href{https://hub.docker.com/r/esridocker/arcgis-api-python-notebook}{esridocker/arcgis-api-python-notebook:1.5}\cite{img-esri} - container renamed \emph{esri}.
-  \item \href{https://hub.docker.com/_/mongo}{mongo:4.1}\cite{img-mongo} - container named \emph{mongo}.
-\end{itemize}
-
-\subsection{Code}\label{code}
-\begin{itemize}
-  \item \href{https://github.com/apjansing/Open-House-Route-Planner}{apjansing/Open-House-Route-Planner} - This project.
-  \begin{itemize}
-    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/ICSParser.py}{ICSParser} - Class for parsing ICS files.
-    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/MongoOps.py}{MongoOps} - Class for:
-    \begin{itemize}
-      \item loading data to database, 
-      \item querying the database for geocoded address,
-      \item querying the database for directions,
-      \item querying the ArcGIS Developer API for geocoded address,
-      \item and querying the ArcGIS Developer API for directions.
-    \end{itemize}
-    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/make_directions_matrix.py}{DirectionsMatrix} - Class for creating a matrix of directions data pertaining to locations passed to it. It utilized the MongoOps class to safely query for directions between open houses.
-    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/OpenHouseGraph.py}{OpenHouseGraph} - A graph data structure used for computing routes one might take while visiting open houses.
-    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/esri/esri_flask.py}{Esri Flask App} - REST endpoint that is designed to accept information from MongoOps and query the ArcGIS Developer API for geocoded address information or directions between two GeoJSON Points.
-  \end{itemize}
-  \item \href{https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2}{Data Scientists, The one Graph Algorithm you need to know}\cite{Agarwal} - Basis for the OpenHouseGraph class.
-\end{itemize}
-
-%%%%%%%%%SECTION%%%%%%%%%
-
-\begin{thebibliography}{99}
-  
-\bibitem{Agarwal}
-Agarwal, R. (2019). To all Data Scientists - The one Graph Algorithm you need to know. [online] Towards Data Science. Available at: \url{https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2} [Accessed 13 Apr. 2019].
-
-\bibitem{PYArcGIS}
-ArcGIS for Developers. (2019). ArcGIS API for Python | ArcGIS for Developers. [online] Available at: \url{https://
-developers.arcgis.com/python/} [Accessed 13 Apr. 2019].
-
-\bibitem{ArcGIS}
-ArcGIS for Developers. (2019). ArcGIS for Developers. [online] Available at: \url{https://developers.arcgis.com/} [Accessed 13 Apr. 2019].
-
-\bibitem{ICS}
-Wikiwand. (2019). iCalendar | Wikiwand. [online] Available at: \url{https://www.wikiwand.com/en/ICalendar} [Accessed 13 Apr. 2019].
-  
-\bibitem{DOCKER}
-Docker Documentation. (2019). About Docker CE. [online] Available at: \url{https://docs.docker.com/install/} [Accessed 13 Apr. 2019].
-
-\bibitem{DC}
-Docker Documentation. (2019). Install Docker Compose. [online] Available at: \url{https://docs.docker.com/compose/install/} [Accessed 13 Apr. 2019].
-  
-\bibitem{SPARK}
-Spark.apache.org. (2019). GraphX | Apache Spark. [online] Available at: \url{https://spark.apache.org/graphx/} [Accessed 13 Apr. 2019].
-
-\bibitem{Flask}
-Flask.pocoo.org. (2019). Welcome | Flask (A Python Microframework). [online] Available at: \url{http://flask.pocoo.org/} [Accessed 14 Apr. 2019].
-
-\bibitem{Trulia}
-Trulia. (2019). Trulia: Real Estate Listings, Homes for Sale, Housing Data. [online] Available at: \url{https://www.trulia.com/} [Accessed 13 Apr. 2019].
 
 
-\bibitem{img-pyspark}
-jupyter/pyspark-notebook. (2019). \url{https://hub.docker.com/r/jupyter/pyspark-notebook}: MongoDB.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                   STOP REMOVING HERE :-)                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibitem{img-esri}
-esridocker/arcgis-api-python-notebook. (2019). \url{https://hub.docker.com/r/esridocker/arcgis-api-python-notebook}: MongoDB.
+\bibliographystyle{plain}
+% change the following to whatever your .bib filename is (minus the ".bib")
+\bibliography{Open-House-Route-Planner}
 
-\bibitem{img-mongo}
-mongo. (2019). \url{https://hub.docker.com/_/mongo}: MongoDB.
 
-\end{thebibliography}
+\begin{appendix}
+    \chapter*{Appendices\addcontentsline{toc}{chapter}{Appendices}}
+    \begin{singlespace}
+        
+        % You should have as many chapters as you need organized into separate files.
+        \input{appendix.tex}
+        
+    \end{singlespace}
+\end{appendix}
+
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -1,0 +1,77 @@
+\chapter{Resources}
+\section{Docker Images}\label{docker-images}
+\begin{itemize}
+  \item \href{https://hub.docker.com/r/jupyter/pyspark-notebook}{jupyter/pyspark-notebook:7254cdcfa22b}\cite{img-pyspark} - container renamed \emph{routefinder}.
+  \item \href{https://hub.docker.com/r/esridocker/arcgis-api-python-notebook}{esridocker/arcgis-api-python-notebook:1.5}\cite{img-esri} - container renamed \emph{esri}.
+  \item \href{https://hub.docker.com/_/mongo}{mongo:4.1}\cite{img-mongo} - container named \emph{mongo}.
+\end{itemize}
+
+
+\section{Docker Compose}
+
+\subsection{backend/docker/docker-compose.yml}
+% UNCOMMENT WHEN BEFORE COMMITTING OR PRINTING
+\inputminted{yaml}{../backend/docker/docker-compose.yml}
+\subsection{backend/docker/.env}
+% UNCOMMENT WHEN BEFORE COMMITTING OR PRINTING
+\inputminted{yaml}{../backend/docker/.env}
+
+
+\chapter{Source Code}\label{code}
+\section{Source Code}
+\begin{itemize}
+  \item \href{https://github.com/apjansing/Open-House-Route-Planner}{apjansing/Open-House-Route-Planner} - This project.
+  \begin{itemize}
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/ICSParser.py}{ICSParser} - Class for parsing ICS files.
+      \lstinputlisting{../backend/docker/persistence/pyspark/ICSParser.py}
+
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/MongoOps.py}{MongoOps} - Class for:
+      \begin{itemize}
+        \item loading data to database, 
+        \item querying the database for geocoded address,
+        \item querying the database for directions,
+        \item querying the ArcGIS Developer API for geocoded address,
+        \item and querying the ArcGIS Developer API for directions.
+      \end{itemize}
+      \lstinputlisting{../backend/docker/persistence/pyspark/MongoOps.py}
+
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/make_directions_matrix.py}{DirectionsMatrix} - Class for creating a matrix of directions data pertaining to locations passed to it. It utilized the MongoOps class to safely query for directions between open houses.
+    \lstinputlisting{../backend/docker/persistence/pyspark/make_directions_matrix.py}
+
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/OpenHouseGraph.py}{OpenHouseGraph} - A graph data structure used for computing routes one might take while visiting open houses.
+    \begin{itemize}
+      \item Inspired by: \href{https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2}{Data Scientists, The one Graph Algorithm you need to know}\cite{Agarwal} - Basis for the OpenHouseGraph class.
+    \end{itemize}
+    \lstinputlisting{../backend/docker/persistence/pyspark/OpenHouseGraph.py}
+
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/esri/esri_flask.py}{Esri Flask App} - REST endpoint that is designed to accept information from MongoOps and query the ArcGIS Developer API for geocoded address information or directions between two GeoJSON Points.
+    \lstinputlisting{../backend/docker/persistence/esri/esri_flask.py}
+  \end{itemize}
+\end{itemize}
+
+\section{Dependencies}
+\subsection{Dependencies required by system.}
+$
+\begin{array}{|c|c|}
+  \hline
+  \text{Docker} & 18.09.2 \\\hline
+  \text{docker-compose} & 1.23.2 \\\hline
+  \text{Esri Developer Account} & N/A \\
+  \hline
+\end{array}
+$
+
+\subsection{Python Modules used within docker containers:}
+$
+\begin{array}{|c|c|}
+  \hline
+  \text{ics} & 0.4\\\hline
+  \text{pymongo} & 3.7.2 \\\hline
+  \text{requests} & 2.21.0 \\\hline
+  \text{pandas} & 0.24.1 \\\hline
+  \text{bs4} & 0.0.1 \\\hline
+  \text{virtualenv} & 16.4.0 \\\hline
+  \text{Flask} & 0.12.2 \\
+  \hline
+\end{array}
+$

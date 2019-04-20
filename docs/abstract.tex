@@ -1,0 +1,7 @@
+\begin{abstract}
+
+This program begins to allow users to enter a series of open houses and finds a route that will allow the user to visit the maximum number of open houses given the constraints of travel time between locations and when the open houses are open.
+
+The program accepts a directory of ICS files\cite{ICS} that contain open house data. The files are parsed, geocoded, and cached in a database. Then a \textit{directions matrix} is constructed to create a graph. This graph is traversed using edge weights to determine how long it takes to get from one house to the next. Adding the edge weight to \textit{current time} variable, it is then determined if the user would arrive at a given open house in time. If the user arrives at an open house in time, then the traversal continues until either there are either no more houses to travel to, or the user would not be able to arrive at any other houses in time.
+\end{abstract}
+

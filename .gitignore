@@ -80,7 +80,7 @@ mongo.lock*.bson
 WiredTiger*
 *.bson
 
-# LaTeX  auxiliary files and output
+# LaTeX auxiliary files and output
 *.log
 *.out
 *.aux
@@ -88,3 +88,6 @@ WiredTiger*
 *.fdb_latexmk
 *.fls
 *.synctex.gz
+
+## LaTeX minted folder
+docs/_minted-Open-House-Route-Planner/

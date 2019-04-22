@@ -9,7 +9,7 @@
 \usepackage{amssymb, amsmath, amsthm, enumerate, graphicx, multirow, float, color, xcolor}
 \usepackage{tikz, standalone}
 \usetikzlibrary{arrows}
-\usetikzlibrary{graphs,quotes}
+\usetikzlibrary{graphs,quotes, positioning}
 \usepackage[hidelinks]{hyperref}
 \hypersetup{breaklinks=true}
 \urlstyle{same}
@@ -70,8 +70,8 @@
 \makeatother
 
 % Another Code Snippet displayer used to colorize yml properly
-% % UNCOMMENT WHEN BEFORE COMMITTING OR PRINTING
-% \usepackage{minted}
+% UNCOMMENT WHEN BEFORE COMMITTING OR PRINTING
+\usepackage{minted}
 
 \usepackage{listings}
 \usepackage{color}
@@ -303,7 +303,7 @@ together with the style-file {\tt sunypolyms.sty}.}
     % figures or tables
     %
     \listoffigures
-    \listoftables
+    % \listoftables
     
 \end{romanpages}        % All done with roman-numbered pages
 
@@ -399,7 +399,7 @@ Docker is a container platform that helps facilitate rapid prototyping, developm
 This docker-compose network consisted of three containers to query ArcGIS API, store geocoded data, and perform computation on graph data structure; esri, mongo, and routefinder, respectively (see Figure \ref{docker-compose-network-diagram} and Appendix \ref{docker-images}).
 \begin{figure}[!htb]
   \begin{center}
-      \includestandalone[width=9cm]{tikz/docker-compose}
+      \includestandalone[width=10cm]{tikz/docker-compose}
       \caption{Docker-compose network diagram.}\label{docker-compose-network-diagram}
     \end{center}
 \end{figure}
@@ -407,7 +407,7 @@ This docker-compose network consisted of three containers to query ArcGIS API, s
 
 \subsection{Computation}
 
-When the project was started, it was thought that Spark could be used to perform graph processing\cite{SPARK}. Later on, it was decided that the graphs were not going to be large enough to have to worry about optimizing the processing. A graph data structure was still used for handing the data when the time came to computing routes\cite{Agarwal}. The vertices were given IDs, addresses, start and end times, and edges with weights.
+When the project was started, it was thought that Spark could be used to perform graph processing\cite{SPARK}. Later on, it was decided that the graphs were not going to be large enough to have to worry about optimizing the processing. A graph data structure\cite{Agarwal} was still used for handing the data and computing routes.
 
 %%%%%%%%%SECTION%%%%%%%%%
 \chapter{Setup and Execution}
@@ -424,7 +424,7 @@ For the purposes of this and following sections refer to Figure \ref{ICS-Example
       DTEND:20190414T170000Z
       SUMMARY: REDACTED
       DESCRIPTION: REDACTED
-      LOCATION: REDACTED (location1)
+      LOCATION: REDACTED (location0)
       END:VEVENT
       END:VCALENDAR
     \end{lstlisting}
@@ -437,22 +437,22 @@ For the purposes of this and following sections refer to Figure \ref{ICS-Example
       DTEND:20190413T170000Z
       SUMMARY: REDACTED
       DESCRIPTION: REDACTED
-      LOCATION: REDACTED (location2)
+      LOCATION: REDACTED (location1)
       END:VEVENT
       END:VCALENDAR
     \end{lstlisting}
-    \caption{Example ICS files (locations 1 and 2).}\label{ICS-Examples}
+    \caption{Example ICS files (locations 0 and 1).}\label{ICS-Examples}
     \end{center}
   \end{figure}
 
 % \subsection{Geocoding} \label{geocoding}
-Given a directory of $n$ ICS files (as per section \ref{E}) the data is parsed by the ICSParser (Appendix \ref{ICSParser}) and the address information is \emph{safely geocoded} (querying for existence in MongoDB, otherwise querying ArcGIS API for information) by MongoOps and a Flask REST endpoint (Appendices \ref{MongoOps} and \ref{Esri Flask App} respectively) \cite{Flask}. This process yeilds data like that shown in Figure \ref{location1_data}.
+Given a directory of $n$ ICS files (as per section \ref{E}) the data is parsed by the ICSParser (Appendix \ref{ICSParser}) and the address information is \emph{safely geocoded} (querying for existence in MongoDB, otherwise querying ArcGIS API for information) by MongoOps and a Flask REST endpoint (Appendices \ref{MongoOps} and \ref{Esri Flask App} respectively) \cite{Flask}. This process yeilds data like that shown in Figure \ref{location0_data}.
 \begin{figure}[!htb]
   \begin{center}
     \begin{lstlisting}
-      {'_id': ObjectId('5cabffe2671c85002d41afb3'), 'url': 'REDACTED', 'dtstart': '20190414T153000Z', 'dtend': '20190414T170000Z', 'summary': 'REDACTED', 'description': 'REDACTED', 'location': {'geometry': {'x': x_1, 'y': y_1, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_1, 'Y': y_1, 'DisplayX': x_d, 'DisplayY': y_d, 'Xmin': x_min, 'Xmax': x_max, 'Ymin': y_min, 'Ymax': y_max, 'ExInfo': '', 'OBJECTID': 1}, 'address': <location1>(lower case, no punctuation)}, 'address_hash': sha1(location1)}
+      {'_id': ObjectId('5cabffe2671c85002d41afb3'), 'url': 'REDACTED', 'dtstart': '20190414T153000Z', 'dtend': '20190414T170000Z', 'summary': 'REDACTED', 'description': 'REDACTED', 'location': {'geometry': {'x': x_0, 'y': y_0, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_0, 'Y': y_0, 'DisplayX': x_{d0}, 'DisplayY': y_{d0}, 'Xmin': x_{min0}, 'Xmax': x_{max0}, 'Ymin': y_{min0}, 'Ymax': y_{max0}, 'ExInfo': '', 'OBJECTID': 1}, 'address': <location0>(lower case, no punctuation)}, 'address_hash': sha1(location0)}
     \end{lstlisting}
-    \caption{Final location JSON for the location1 ICS file.}\label{location1_data}
+    \caption{Final location JSON for the location0 ICS file.}\label{location0_data}
   \end{center}
 \end{figure}
 
@@ -460,29 +460,137 @@ Given a directory of $n$ ICS files (as per section \ref{E}) the data is parsed b
 \begin{figure}[!htb]
   \begin{center}
     \begin{lstlisting}
-      {'_id': ObjectId('5cad42f3671c850b358ab86b'), 'directions': [{'Time of day': '15:59:01', 'Direction text': 'Start at Location 1', 'Duration (min)': 0.0, 'Distance (miles)': 0.0}, {'Time of day': '15:59:01', 'Direction text': REDACTED, 'Duration (min)': 0.73, 'Distance (miles)': 0.4}, {'Time of day': '15:59:45', 'Direction text': REDACTED, 'Duration (min)': 7.33, 'Distance (miles)': 4.15}, {'Time of day': '16:06:21', 'Direction text': REDACTED, 'Duration (min)': 11.9, 'Distance (miles)': 8.26}, {'Time of day': '16:10:55', 'Direction text': REDACTED, 'Duration (min)': 14.04, 'Distance (miles)': 9.74}, {'Time of day': '16:13:03', 'Direction text': REDACTED, 'Duration (min)': 18.45, 'Distance (miles)': 13.29}, {'Time of day': '16:17:28', 'Direction text': REDACTED, 'Duration (min)': 19.67, 'Distance (miles)': 13.85}, {'Time of day': '16:18:41', 'Direction text': 'Finish at Location 2, on the right', 'Duration (min)': 19.67, 'Distance (miles)': 13.85}], 'directions_hash': sha1(location1 + location2), 'start': location1, 'stop': location2}
+      {'_id': ObjectId('5cad42f3671c850b358ab86b'), 'directions': [{'Time of day': '15:59:01', 'Direction text': 'Start at Location 0', 'Duration (min)': 0.0, 'Distance (miles)': 0.0}, {'Time of day': '15:59:01', 'Direction text': REDACTED, 'Duration (min)': 0.73, 'Distance (miles)': 0.4}, {'Time of day': '15:59:45', 'Direction text': REDACTED, 'Duration (min)': 7.33, 'Distance (miles)': 4.15}, {'Time of day': '16:06:21', 'Direction text': REDACTED, 'Duration (min)': 11.9, 'Distance (miles)': 8.26}, {'Time of day': '16:10:55', 'Direction text': REDACTED, 'Duration (min)': 14.04, 'Distance (miles)': 9.74}, {'Time of day': '16:13:03', 'Direction text': REDACTED, 'Duration (min)': 18.45, 'Distance (miles)': 13.29}, {'Time of day': '16:17:28', 'Direction text': REDACTED, 'Duration (min)': 19.67, 'Distance (miles)': 13.85}, {'Time of day': '16:18:41', 'Direction text': 'Finish at Location 1, on the right', 'Duration (min)': 19.67, 'Distance (miles)': 13.85}], 'directions_hash': sha1(location0 + location1), 'start': location0, 'stop': location1}
     \end{lstlisting}
-    \caption{Directions information between location1 and location2.}\label{location1_location2_directions}
+    \caption{Directions information between location0 and location1.}\label{location0_location1_directions}
   \end{center}
 \end{figure}
 
-Gathering directions between locations follows a similar pattern. After the ICS files have been parsed into data that looks like Figure \ref{location1_data}, the same Flask app has another REST endpoint to accept two locations and return the directions, along with estimated durations as each step (see Figure \ref{location1_location2_directions}). At every point, when data has been geocoded (i.e. Figures \ref{location1_data} and \ref{location1_location2_directions}) that data is saved in an easily retrievable fashion via unique constructable hashes based on the location(s)' address(es)'s.
+Gathering directions between locations follows a similar pattern. After the ICS files have been parsed into data that looks like Figure \ref{location0_data}, the same Flask app has another REST endpoint to accept two locations and return the directions, along with estimated durations as each step (see Figure \ref{location0_location1_directions}). At every point, when data has been geocoded (i.e. Figures \ref{location0_data} and \ref{location0_location1_directions}) that data is saved in an easily retrievable fashion via unique constructable hashes based on the location(s)' address(es)'s.
 
 \section{Creating A Graph}
-Once the ICS files have been processed, a \emph{direction matrix} is created. First, a verbose matrix is created by taking the addresses from the ICS files and querying the database for all $n \choose 2$ combinations of $\textsc{SHA-1}\left(\textsc{concat}\left(location_i, location_j\right)\right)$, where $0 <= i < j <= n-1$. Each entry of this matrix would look like that of Figure \ref{location1_location2_directions} and that is why a simplified form of the matrix is listed along side this matrix in the DirectionMatrix class (Appendix \ref{DirectionsMatrix}).
+\subsection{Directions Matrix}
+Once the ICS files have been processed, a \emph{direction matrix} is created. First, a verbose matrix is created by taking the addresses from the ICS files and querying the database for all $n \choose 2$ combinations of $\textsc{SHA-1}\left(\textsc{concat}\left(location_i, location_j\right)\right)$, where $0 <= i < j <= n-1$. Each entry of this matrix would look like that of Figure \ref{location0_location1_directions} and that is why a simplified form of the matrix is listed along side this matrix in the DirectionMatrix class (Appendix \ref{DirectionsMatrix}).
 
 This verbose directions matrix is entirely usable, but would require the code also be verbose when gathering the travel time when constructing the graph and assigning edge weights. Hence, a simplified matrix that looks like Figure \ref{simplified directions array} is created as a refinement of the original data.
 
 \begin{figure}[!htb]
   \begin{lstlisting}
-    [{'_id': ObjectId('5cad42f3671c850b358ab86b'), 'url': REDACTED, 'dtstart': '20190414T153000Z', 'dtend': '20190414T170000Z', 'summary': REDACTED, 'description': REDACTED, 'location': {'geometry': {'x': x_1, 'y': y_1, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_1, 'Y': y_1, 'DisplayX': x_{d1}, 'DisplayY': y_{d1}, 'Xmin': x_{min1}, 'Xmax': x_{max1}, 'Ymin': y_{min1}, 'Ymax': y_{max1}, 'ExInfo': '', 'OBJECTID': 1}, 'address': REDACTED}, 'address_hash': sha1(location1), 'durations': [[1, 13.85]]}
- {'_id': ObjectId('5cac003a671c85002d41afb9'), 'url': REDACTED, 'dtstart': '20190413T150000Z', 'dtend': '20190413T170000Z', 'summary': REDACTED 'description': 'REDACTED, 'location': {'geometry': {'x': x_2, 'y': y_2, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_2, 'Y': y_2, 'DisplayX': x_{d2}, 'DisplayY': y_{d2}, 'Xmin': x_{min2}, 'Xmax': x_{max2}, 'Ymin': y_{min2}, 'Ymax': y_{max2}, 'ExInfo': '', 'OBJECTID': 1}, 'address': REDACTED},, 'address_hash': sha1(location2), 'durations': [[0, 14.15]]}]
+    [{'_id': ObjectId('5cad42f3671c850b358ab86b'), 'url': REDACTED, 'dtstart': '20190414T153000Z', 'dtend': '20190414T170000Z', 'summary': REDACTED, 'description': REDACTED, 'location': {'geometry': {'x': x_0, 'y': y_0, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_0, 'Y': y_0, 'DisplayX': x_{d0}, 'DisplayY': y_{d0}, 'Xmin': x_{min0}, 'Xmax': x_{max0}, 'Ymin': y_{min0}, 'Ymax': y_{max0}, 'ExInfo': '', 'OBJECTID': 1}, 'address': REDACTED}, 'address_hash': sha1(location0), 'durations': [[1, 13.85]]}
+ {'_id': ObjectId('5cac003a671c85002d41afb9'), 'url': REDACTED, 'dtstart': '20190413T150000Z', 'dtend': '20190413T170000Z', 'summary': REDACTED 'description': 'REDACTED, 'location': {'geometry': {'x': x_1, 'y': y_1, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_1, 'Y': y_1, 'DisplayX': x_{d1}, 'DisplayY': y_{d1}, 'Xmin': x_{min1}, 'Xmax': x_{max1}, 'Ymin': y_{min1}, 'Ymax': y_{max1}, 'ExInfo': '', 'OBJECTID': 1}, 'address': REDACTED},, 'address_hash': sha1(location1), 'durations': [[0, 14.15]]}]
   \end{lstlisting}
   \caption{Simplified Directions Array (Matrix).}\label{simplified directions array}
 \end{figure}
 
-With the directions matrix, all the information has been gathered to creating a graph and working through the problem of finding routes that direct users to a maximum number of houses.
+ \subsection{Open House Graph}
+ With the directions matrix derived, a graph can now be constructed and routes can be discovered that direct users to a maximum number of houses. Looking at Figure \ref{simplified directions array} we can see that edge data has been defined by the \textsf{durations} key-value pairing, the start and stop times are included; all that is left is to do one last transformation to what the graph expects and create the graph (Figure \ref{last refinement}).
+ \begin{figure}[!htb]
+   \begin{lstlisting}
+for i in range(len(sdm)):
+  start = str(int(sdm[i]['dtstart'][9:-3])-400)
+  start_minutes = int(start[:-2])*60 + int(start[-2:])
+  end = str(int(sdm[i]['dtend'][9:-3])-400)
+  end_minutes = int(end[:-2])*60 + int(end[-2:])
+  sdm[i]['start_minutes'] = start_minutes
+  sdm[i]['end_minutes'] = end_minutes
 
+vertices = []
+V = None
+for i in range(len(sdm)):
+    V = {'ID' : i, 
+            'start' : sdm[i]['start_minutes'], 
+            'end' : sdm[i]['end_minutes'], 
+            'edges' : sdm[i]['durations'],
+            'address_hash' : sdm[i]['address_hash'],
+            'address' : sdm[i]['location']['address']}
+    vertices += [V]
+ohg = OpenHouseGraph(vertices)
+   \end{lstlisting}
+   \caption{Last Refinement and Graph Construction.}\label{last refinement}
+  \end{figure}
+
+The \textsf{ID} of a given vertex (as seen in second loop of Figure \ref{last refinement}), corresponds to the $0^{th}$ index of an \textsf{edge} (\textsf{durations} in the directions matrix). So that data from Figure \ref{simplified directions array} will looks like Figure \ref{vertex edge relation}, meaning that it will take $13.85$ minutes travel from the house $0$ to house $1$, and $14.15$ in the other direction.
+\begin{figure}[!htb]
+  \begin{lstlisting}
+    [{'ID': 0 'durations': [[1, 13.85]], ...}, 
+    {'ID': 1 'durations': [[0, 14.15]], ...}]
+  \end{lstlisting}
+  \caption{Vertex-Edge Relation.}\label{vertex edge relation}
+\end{figure}
+
+The \textsf{Graph} constructor (see Appendix \ref{OpenHouseGraph}) takes this information and stores the edges as [[0, 1, 13.85], [1, 0, 14.15]], and stores the rest of the JSON as the vertex information. To help keep the explanation as general as possible, the following notation will be used:
+\begin{itemize}
+  \item vertices will be refered to as $v_i$,
+  \item the start and stop time of open houses belong to a vertex will be denoted $t_{i0}$ and $t_{i1}$ respectively,
+  \item edges from $v_i$ to $v_j$ will be denoted $e_{ij}$.
+  \item values from edges $e_{ij}$ can be accessed as they would be in an array. \ie $e_{01}[2] = 13.85$ (Figure \ref{vertex edge relation}).
+\end{itemize}
+
+Figure \ref{last refinement} shows some shorthand that I wanted to use. Instead of working with a built in time API, I assumed that the day did not matter. All that needed to work with time was to convert the time to a base-10 numbering system (minutes since midnight), This allows computation in the graph to use duration in minutes returned by the ArcGIS API, and just keep a running tally of the time (scoped to a recursive function call) when figuring out when one would arrive at a given house.
+ 
+\subsection{Finding Routes}
+\subsubsection{Starting Vertices}
+To start the search of paths, a for-loop is used to select starting vertices to enter the graph on. The program is written such that when we arrive at the first vertex, $v_i$, that the we arrive as soon as the open house starts, $t_{i0}$. $t_{i0}$ will be used as the initializing value for a time tracking variable, $T$, and $v_i$ is used to start the current paths' set of visited locations, $V$, and will later populate the $trip$ variables that contains the possible trips given the arbitrary starting point $v_i$.
+\begin{figure}[!htb]
+  \begin{center}
+      \includestandalone[width=10cm]{tikz/trivial-graph}
+      \caption{A trivial case of the Open House Graph.}\label{trivial-graph}
+    \end{center}
+\end{figure}
+
+\subsubsection{Discoving Routes}
+Now that we are at $v_i$ at time $T$ and having visited $V$, the \textsf{visit\_next} function in \textsf{OpenHouseGraph} follows this pattern
+\begin{enumerate}
+  \item Gather acyclic edges and iterate on them,
+  \item spend 30 minutes (default value) at the current house and assign that to a departure time variable ($T_d := T + 30$),
+  \item determine the what the arrival time at $v_j$ would be and assign that to an arrival time variable ($T_a := T_d + e_{ij}[2]$),
+  \item determine if the open house has opened and determine if it has closed,\\
+  \hspace*{0.5em} Determining both values allows us to perform additional checks on the time.
+    \begin{itemize}
+      \item If the open house has \textbf{not opened}, we can tell the function to set the arrival time to the start of the open house ($T_a := t_{j0}$).
+      \item If the open house is \textbf{not closed}, we can tell the function that the arrival time is correct and does not need updating.
+      \item If the open house is \textbf{closed} (or in the unlikely case that the time is in some other state), we can tell the function to set the arrival time to $-1$ ($T_a := -1$).
+    \end{itemize}
+    \hspace*{0.5em} If $T_a > 0$, then then function is allowed to preceed.
+  \item $v_j$ is added to a list of visited $V$ ($V := [\cdots , v_i, v_j]$, where $V$ previously equaled $[\cdots , v_i]$),
+  \item finally, a recursive call is made to the \textsf{visit\_next} function to start the pattern all over again. Once no valid acyclic edges exist, 
+    \begin{itemize}
+      \item the function will return its current $V$ as long as $|V| > 1$; adding the value of $V$ of a deeper recursive layer to the $trip$ variable one level higher. 
+      \item Otherwise \textsf{visit\_next} will return all the $trip$s it has discovered back to the user.
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{Evaluating The Results}
+It is at this point where I called my development to a halt. With our trivial case above, the scenario returns $[[0,1], [1,0]]$. This a worst case scenario for systems with more vertices, but would most likely only occur with $4$ or less houses (assuming a $30$ minute stay at each house). With larger graphs like that of Figure \ref{seven-houses}, the returned scenario often times looks like Figure \ref{seven-houses-results}.
+\begin{figure}[!htb]
+  \begin{center}
+    \includestandalone[width=7.5cm]{tikz/seven-houses}
+    \caption{Open House Graph containing seven houses.}\label{seven-houses}
+  \end{center}
+\end{figure}
+\begin{figure}
+  \begin{center}
+    $[[0, 1, 2, 3, 4, 5, 6], [0, 1, 2, 3, 4, 6, 5], [0, 1, 2, 3, 4, 6], [0, 1, 2, 3, 4, 5],$\\ $\cdots, [0, 2, 4, 5, 6], \cdots, [0, 4, 6], [2, 0, 1, 3, 5, 4, 6], \cdots [6, 5], \cdots]$
+  \end{center}
+  \caption{Simulated results of graph of seven vertices.}\label{seven-houses-results}
+\end{figure}
+
+The sheer number of results may seem intimidating, but it is a simple task a finding the max length of the trips and then displaying a trimmed down version. In the sample results of Figure \ref{seven-houses-results}, we can see that it is possible to visit all seven houses in a couple of different ways. This will not always be the case because of the limitations of travel and when the houses are open to the public. I tried to stress the system with $10$ open houses and the program always completes its task in less than $0.6$ seconds.
+
+\chapter{Conclusions and Future Work}
+\section{Conclusions}
+\subsection{Reflection}
+In the beginning of this project, I wanted to use different higher level graph theory concepts to try to solve the problem of routing the user to different open houses, rather than via brute force. But an hour commute to work, school, and going to houses using these concepts to find and subsequently purchase my house took quite a bit of time. 
+
+The methodology of routing the user to house is fairly sound, though after nailing down the 30 minute stay as a default time to stay at a house, I asked my realtor how long people usually stayed at an open house and he said it was more like 10 - 15 minutes. A change to how much time the user would potentially stay at a house can be changed easily, but I did not concern myself too much with that because the core logic of the problem was completed and I figured assuming the user stayed a house longer than normal would allow for human error to occur throughout the day.
+
+\subsection{Justification}
+I would still like to look into using methods other than the brute force that was used here, but for the problem of routing a user to a finite number of open houses it might not be necessary to do much more than brute forcing the problem. I was only able to find enough open houses as a given weekend to try to stress the program a little bit. Even 10 houses, \emph{blindly} chosen, did not take very long to work out. 
+
+The nature of the problem binds how much can be done. If the program attempts to derive routes from open houses that open later in the day, those paths will terminate rather quickly; limiting the potential number of routes significantly.
+
+\section{Future Work}
+TODO
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                   STOP REMOVING HERE :-)                         %

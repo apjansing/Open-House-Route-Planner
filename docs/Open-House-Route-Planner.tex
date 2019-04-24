@@ -580,17 +580,17 @@ The sheer number of results may seem intimidating, but it is a simple task a fin
 \chapter{Conclusions and Future Work}
 \section{Conclusions}
 \subsection{Reflection}
-In the beginning of this project, I wanted to use different higher level graph theory concepts to try to solve the problem of routing the user to different open houses, rather than via brute force. But an hour commute to work, school, and going to houses using these concepts to find and subsequently purchase my house took quite a bit of time. 
+In the beginning of this project, I wanted to use different higher level graph theory concepts to try to solve the problem of routing the user to different open houses, rather than via brute force. But becuase where the inspiration of this project originally came from, I was also looking for a house. I developed the methodology and the project into working states and used them to help find the house I recently moved into.
 
 The methodology of routing the user to house is fairly sound, though after nailing down the 30 minute stay as a default time to stay at a house, I asked my realtor how long people usually stayed at an open house and he said it was more like 10 - 15 minutes. A change to how much time the user would potentially stay at a house can be changed easily, but I did not concern myself too much with that because the core logic of the problem was completed and I figured assuming the user stayed a house longer than normal would allow for human error to occur throughout the day.
 
 \subsection{Justification}
-I would still like to look into using methods other than the brute force that was used here, but for the problem of routing a user to a finite number of open houses it might not be necessary to do much more than brute forcing the problem. I was only able to find enough open houses as a given weekend to try to stress the program a little bit. Even 10 houses, \emph{blindly} chosen, did not take very long to work out. 
+I would still like to look into using methods other than the brute force to solve this problem, but for routing a user to a small number of open houses it might not be necessary to do much more than brute forcing the problem. Given my price range and blindly choosing 10 houses from Central New York, the program barely took $0.5$ seconds to exhaust all routes one could take. 
 
-The nature of the problem binds how much can be done. If the program attempts to derive routes from open houses that open later in the day, those paths will terminate rather quickly; limiting the potential number of routes significantly.
+The graphs never got large enough to worry about other methods than brute force. Now that I am not using the program for my personal use in Central New York, I have requested an export of open house data in San Antonio, TX; as I know someone who has expressed interest in finding a home closer to their work. But even if Trulia responds and provides me with the export of data I requested, the nature of the problem binds how much can be done. If the program attempts to derive routes from open houses that open later in the day, those paths will terminate rather quickly. If there is a lot of traffic, like that which might exist in a large city, the driving directions will determine that one will not be able to visit certain open houses in a route together. Factors like these may make brute force viable, even with larger data sets.
 
 \section{Future Work}
-TODO
+As I mentioned in my justification, even if brute force holds up against large data sets, I would like implement other methods of traversing the graph. I would also like to work on the ingestion of data. Currently, the program relies on the user providing specific file type (ICS files) in a the \textsf{/data} directory of a docker container. I do this by manually downloading ICS files from Trulia's website to a directory that I mount to the container; it is easy, but tedious. Lastly, I would love to enhance the feel for the program by supplying a front end that users could interact with and receive detailed information from; instead of a terminal output of the addresses in the order they should be visited.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                   STOP REMOVING HERE :-)                         %

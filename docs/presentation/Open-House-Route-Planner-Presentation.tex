@@ -1,0 +1,290 @@
+	% An Overview of Lie Algebra's
+% Adapted from Justin Ryan's "Examples of Lie Algebras"
+% Chaskin Saroff and Alexander Jansing	
+% last changed: 3 May 2015
+% feel free to make any improvements/changes you wish
+
+\documentclass[9 pt]{beamer}
+\usepackage{etex}
+\reserveinserts{28}
+% \usepackage{default}
+\usepackage{lmodern}
+\usepackage{amsmath,amsfonts,epsfig,pgf,graphicx}
+\usepackage{tikz, standalone}
+\usetikzlibrary{arrows}
+\usetikzlibrary{graphs,quotes, positioning}
+\usepackage{cite}
+
+
+\usepackage{hyperref}
+\usepackage{url}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+
+% choose your theme
+\usetheme{Warsaw} % Warsaw, Copenhagen, Darmstadt, Madrid, Singapore, etc...
+\setbeamertemplate{caption}[numbered]
+
+% custom SUNY Poly color scheme
+\definecolor{poly-gold}{rgb}{0.91,0.624,0.114}
+\definecolor{poly-blue}{rgb}{0.122,0.184,0.392}
+
+\setbeamercolor{palette primary}{bg=poly-blue,fg=poly-gold}
+\setbeamercolor{palette secondary}{bg=poly-blue,fg=poly-gold}
+\setbeamercolor{palette tertiary}{bg=poly-blue,fg=poly-gold}
+\setbeamercolor{palette quaternary}{bg=poly-blue,fg=poly-gold}
+\setbeamercolor{structure}{fg=poly-blue} % itemize, enumerate, etc
+\setbeamercolor{section in toc}{fg=poly-blue} % TOC sections
+
+\setbeamercolor{alerted text}{fg=poly-blue}
+\usecolortheme[named={poly-blue}]{structure}
+\def\today{\number\day\space\ifcase\month\or
+   January\or February\or March\or April\or May\or June\or
+   July\or August\or September\or October\or November\or December\fi
+   \space\number\year}
+
+% something I found to get alert blocks in the Poly color scheme
+\newenvironment<>{lakeblock}[1]{%
+  \begin{actionenv}#2%
+      \def\insertblocktitle{#1}%
+      \par%
+      \mode<presentation>{%
+\setbeamercolor{block title}{fg=white,bg=black}
+       \setbeamercolor{block body}{fg=white,bg=poly-blue}
+            }%
+      \usebeamertemplate{block begin}}
+    {\par\usebeamertemplate{block end}\end{actionenv}}
+
+% commutative diagrams with XY-pic
+\usepackage[all]{xy}
+\SelectTips{cm}{}
+% make \mathscr, TeX \cal, and Euler script *all* available
+% (notice the new command names to avoid overlap and/or confusion)
+\usepackage{mathrsfs}
+\let\rscr=\mathscr % use \rscr{} for Ralph Smith fancy script
+\let\mathscr=\relax
+\let\mcal=\mathcal % use \mcal{} for TeX \cal script
+\usepackage{eucal}
+\let\escr=\mathcal % use \escr{} for Euler script
+\let\mathcal=\relax
+% a better "bar" thanks to Donald Arsenau -- see \pbar infra
+\usepackage{accents}
+
+% title page information
+\title[Open House Route Planner]{Open House Route Planner}
+\author[A.\, Jansing]{Alexander Jansing}
+\institute[SUNY Polytechnic]{SUNY Polytechnic Institute\\ Department of Computer Science}
+\date{\today}
+
+% new math commands
+\newcommand{\at}[1]{\emph{\alert{#1}}}
+\newcommand{\ad}[1]{\text{ad}_{#1}}
+\newcommand{\add}[1]{\ad{#1}^\dagger}
+\newcommand{\br}[2]{\left[ #1, #2 \right]}
+\newcommand{\bre}{\br{\ }{\,}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\h}{\lag{h}}
+\newcommand{\inp}[2]{\langle #1, #2 \rangle}
+\newcommand{\inpe}{\inp{\ }{\,}}
+\newcommand{\lag}[1]{\mfrak{#1}}
+\newcommand{\mfrak}[1]{\mathfrak{#1}}
+\newcommand{\R}{\mathbb{R}}
+\renewcommand{\a}{\alpha}
+\newcommand{\surj}{\rightarrow\kern-.82em\rightarrow}
+\newcommand{\tQ}{\widetilde{Q}}
+\renewcommand{\v}{\lal{v}}
+\newcommand{\z}{\lal{z}}
+\newcommand{\V}{\mathfrak{g}}
+\newcommand{\fg}{\mathfrak{g}}
+\newcommand{\fz}{\mathfrak{z}}
+\newcommand{\fv}{\mathfrak{v}}
+\newcommand{\fh}{\mathfrak{h}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\zvec}{\mathbf{0}}
+\newcommand{\lal}[1]{\mathfrak{#1}}
+\newcommand{\lan}{\lal{n}}
+\newcommand{\lav}{\lal{v}}
+\newcommand{\laz}{\lal{z}}
+%\renewcommand{\span}[1]{\text{span}\left\{#1\right\}}
+
+
+% colored text commands
+\newcommand{\red}[1]{{\color{red} #1}}
+\newcommand{\grn}[1]{{\color{green} #1}}
+\newcommand{\blu}[1]{{\color{blue} #1}}
+\newcommand{\ylw}[1]{{\color{yellow} #1}}
+\newcommand{\mgn}[1]{{\color{magenta} #1}}
+\newcommand{\cyn}[1]{{\color{cyan} #1}}
+
+
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=python,
+  aboveskip=2mm,
+  belowskip=2mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\tiny\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breakatwhitespace=true,
+  tabsize=3,
+  breaklines=true,
+  literate={\-}{}{0\discretionary{-}{}{-}},
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}
+}
+
+\begin{document}
+
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%TITLE%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+  \vspace{0.35 cm}
+  
+  \titlepage
+  
+  \includegraphics[height=3cm]{../icons/SUNY-Poly-seal-blue-gold}
+  
+\end{frame}
+
+\subsection{Inspiration}
+\begin{frame}
+  \frametitle{Inspiration}
+  I have been looking for houses. When I add open houses to my Google Calendar, I am able to request direction to whatever house is open next in time, but I was thinking, \emph{``What if two houses are significantly far apart, open at similar times, and there are other houses in each of their respective neighborhoods that open at different times? Is there a way I can plan my day of house hunting so that I can attend all of the open houses?''}\\
+  
+  \pause The answer to this question is, ``yes, within reason.''
+\end{frame}
+
+\subsection{Objective}
+\begin{frame}
+  \frametitle{Objective}
+  Given a series of open houses the application should find routes that will allow the user to visit the maximum number of open houses given the constraints of \emph{travel time} and \emph{when the open houses are open}.
+  
+  After phrasing stating the problem, the problem was divided up into several part:
+  \begin{itemize}
+    \item where the houses were with respect to each other,
+    \item when the open houses were,
+    \item and try to determine the path I needed to take to visit as many open houses as possible.
+  \end{itemize}
+  
+  I will describe how each of these tasks were accomplished and what other work needed to be done to facilitate that work.
+
+\end{frame}
+
+\section{Definition}
+\subsection{Definitions}
+\begin{frame}
+  \frametitle{Definitions}
+  \begin{itemize}
+    \item \emph{Safely Query} - querying for existence in MongoDB before querying ArcGIS API for information. This applies to both \emph{geocoding} an address its coordinates on the planet and to gather the directions from one point to another. \pause
+    \item geocoding - the process or converting addresses to coordinates on the globe.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Definitions}
+  \begin{itemize}
+    \item \emph{directions matrix} - an array of JSONs containing vertex and edge information. While not strictly a matrix, it supplies the information to populate a matrix of travel times. While a matrix is no longer used, it is a good mental image to have when thinking about the OpenHouseGraph.
+    \begin{figure}
+      \begin{lstlisting}
+        [{'_id': ObjectId('5cad42f3671c850b358ab86b'), 'url': REDACTED, 'dtstart': '20190414T153000Z', 'dtend': '20190414T170000Z', 'summary': REDACTED, 'description': REDACTED, 'location': {'geometry': {'x': x_0, 'y': y_0, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_0, 'Y': y_0, 'DisplayX': x_{d0}, 'DisplayY': y_{d0}, 'Xmin': x_{min0}, 'Xmax': x_{max0}, 'Ymin': y_{min0}, 'Ymax': y_{max0}, 'ExInfo': '', 'OBJECTID': 1}, 'address': REDACTED}, 'address_hash': sha1(location0), 'durations': [[1, 13.85]]}
+     {'_id': ObjectId('5cac003a671c85002d41afb9'), 'url': REDACTED, 'dtstart': '20190413T150000Z', 'dtend': '20190413T170000Z', 'summary': REDACTED 'description': 'REDACTED, 'location': {'geometry': {'x': x_1, 'y': y_1, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_1, 'Y': y_1, 'DisplayX': x_{d1}, 'DisplayY': y_{d1}, 'Xmin': x_{min1}, 'Xmax': x_{max1}, 'Ymin': y_{min1}, 'Ymax': y_{max1}, 'ExInfo': '', 'OBJECTID': 1}, 'address': REDACTED},, 'address_hash': sha1(location1), 'durations': [[0, 14.15]]}]
+      \end{lstlisting}
+      \caption{Simplified Directions Array (Matrix).}\label{sda}
+    \end{figure}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Definitions}
+  \begin{itemize}
+    \item \emph{directions matrix} - an array of JSONs containing vertex and edge information. While not strictly a matrix, it supplies the information to populate a matrix of travel times. While a matrix is no longer used, it is a good mental image to have when thinking about the OpenHouseGraph.
+    \begin{itemize}
+      \item Figure \ref{duration matrix} is an implied matrix of travel times between locations from Figure \ref{sda}. $t_{i,j}$ is the travel time between house $i$ and house $j$. The travel time from house $i$ to house $i$ is given the value $-1$ as a guard against reflexive traveling.
+      \begin{figure}
+        $$
+        \left(
+          \begin{array}{cccc}
+            -1 & t_{0, 1} & \cdots & t_{0, n-1} \\
+            t_{1,0} & -1 & \cdots & t_{1, n-1} \\
+            \vdots & \ddots & \ddots & \vdots \\
+            t_{n-1,0} & \cdots & \cdots & -1 \\
+          \end{array}
+        \right)
+        $$
+        \caption{Matrix of travel times between locations.}\label{duration matrix}
+      \end{figure}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Definitions}
+  \begin{itemize}
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/esri/esri_flask.py}{Esri Flask App} - REST endpoint that is designed to accept information from MongoOps and query the ArcGIS Developer API for geocoded address information or directions between two geometry points.
+    \pause\item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/ICSParser.py}{ICSParser} - Class for parsing ICS files to JSON to be geocoded.
+    \pause\item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/MongoOps.py}{MongoOps} - Class for:
+        \begin{itemize}
+          \item loading data to database, 
+          \item querying the database for geocoded address,
+          \item querying the database for directions,
+          \item querying the ArcGIS Developer API for geocoded address,
+          \item and querying the ArcGIS Developer API for directions.
+        \end{itemize}
+
+    \pause\item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/OpenHouseGraph.py}{OpenHouseGraph} - A graph data structure used for computing routes one might take while visiting open houses.
+    \begin{itemize}
+      \item Inspired by: \href{https://towardsdatascience.com/to-all-data-scientists-the-one-graph-algorithm-you-need-to-know-59178dbb1ec2}{Data Scientists, The one Graph Algorithm you need to know}\cite{Agarwal} - Basis for the OpenHouseGraph class.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\section{Example}
+\subsection{Example}
+\begin{frame}
+  \frametitle{Walkthrough of Algorithm}
+
+  
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%Acknowledgements%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Acknowledgements}
+\begin{frame}{Acknowledgements}
+  This work is dedicated to my parents. Without their guidance, I would not be the person I am today. I joined the United States Air Force after their suggestion, where I gained a greater appreciation for my education and the opportunities afforded to me.
+
+  I would like to thank each of my committee members: 
+  
+  Gerard Aiken supplied the Esri ArcGIS Developer credits required to do this work.
+  
+  I would also like to acknowledge Jennifer Tran, Sylvia Pericles, Zhushun Cai, and Oliver Medonza for aiding the initial code base where we won the Esri API Prize and the Grand Prize at Hack Upstate XI.
+  
+  This work was funded by Booz Allen Hamilton tuition assistance program.
+\end{frame}
+
+\begin{frame}
+  \bibliographystyle{plain}
+  % change the following to whatever your .bib filename is (minus the ".bib")
+  \bibliography{../Open-House-Route-Planner}
+\end{frame}
+
+\end{document}

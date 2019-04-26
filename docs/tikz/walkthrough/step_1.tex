@@ -1,0 +1,20 @@
+\documentclass{standalone}
+\usepackage{tikz, xcolor}
+\usetikzlibrary{graphs,quotes,positioning}
+
+\begin{document}
+
+\begin{tikzpicture}
+    \graph [nodes = {rectangle, draw},
+                    circular placement,
+                    radius = 5cm] {
+                        5[yshift=-4cm, label=\Large $\mathbf{v_5}$] ->[bend left, "$32.63$"] 0[label=\Large $\mathbf{v_0}$],
+                        5 ->[bend left, "$42.56$"] 1[label=\Large $\mathbf{v_1}$],
+                        5 ->[bend left, "$34.11$"] 2[label=\Large $\mathbf{v_2}$],
+                        5 ->[bend left, "$35.71$"] 3[label=\Large $\mathbf{v_3}$],
+                        5 ->[bend left, "$16.2$"] 4[label=\Large $\mathbf{v_4}$],
+                        5 ->[bend left, "$14.71$"] 6[label=\Large $\mathbf{v_6}$]
+                        };
+    \node[below=0.25em of 3] (current_time) {\small Current Time = 600 Minutes from Midnight};
+\end{tikzpicture}
+\end{document}

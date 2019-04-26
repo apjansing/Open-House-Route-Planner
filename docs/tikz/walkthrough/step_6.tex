@@ -1,0 +1,23 @@
+\documentclass{standalone}
+\usepackage{tikz, xcolor}
+\usetikzlibrary{graphs,quotes,positioning}
+
+\begin{document}
+
+\begin{tikzpicture}
+    \graph [nodes = {rectangle, draw},
+                    circular placement,
+                    radius = 5cm] {
+    5[yshift=1cm, xshift=-4cm, label=\Large $\mathbf{v_5}$] ->[bend left, "$32.63$"] 6[xshift=-2cm, label=\Large $\mathbf{v_6}$],
+    6 ->[bend left, "$25.42$"] 0[yshift=3.25cm, xshift=5cm, label=\Large $\mathbf{v_0}$],
+    0 ->[bend left, "$8.51$"] 3[yshift=8cm, xshift=8cm, label=\Large $\mathbf{v_3}$],
+    3 ->[bend left, "$14.88$"] 1[yshift=9cm, label=\Large $\mathbf{v_1}$],
+    1 ->[bend left, "$8.54$"] 2[xshift=-8cm, yshift=5cm, label=\Large $\mathbf{v_2}$],
+    
+    2 ->[bend left, "$24.24$"] 4[xshift=-8cm, yshift=2cm, label=\Large $\mathbf{v_4}$]
+                        };
+    \node[below=5em of 1] (current_time) {\small Current Time = 864.24 Minutes from Midnight (810 + 30 + 8.54)};
+
+    % [4, 24.24]
+\end{tikzpicture}
+\end{document}

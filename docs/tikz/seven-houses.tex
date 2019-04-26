@@ -1,6 +1,14 @@
 \documentclass{standalone}
-\usepackage{tikz}
+\usepackage{tikz, xcolor}
 \usetikzlibrary{graphs,quotes,positioning}
+
+
+% custom SUNY Poly color scheme
+\definecolor{poly-gold}{rgb}{0.91,0.624,0.114}
+\definecolor{poly-blue}{rgb}{0.122,0.184,0.392}
+% colored text commands
+\newcommand{\pgold}[1]{{\color{poly-gold} #1}}
+\newcommand{\pblue}[1]{{\color{poly-blue} #1}}
 
 \begin{document}
 
@@ -8,12 +16,12 @@
     \graph [nodes = {rectangle, draw},
                     circular placement,
                     radius = 10cm] {
-                        0[xshift=-3cm, yshift=1cm, label=\Huge $v_0$] ->[bend left] 1[xshift=3cm, label=\Huge $v_1$],
-                        0 ->[bend left] 2[label=\Huge $v_2$],
-                        0 ->[bend left] 3[label=\Huge $v_3$],
-                        0 ->[bend left] 4[label=\Huge $v_4$],
-                        0 ->[bend left] 5[label=\Huge $v_5$],
-                        0 ->[bend left] 6[label=\Huge $v_6$],
+                        0[xshift=-3cm, yshift=1cm, label=\Huge $\mathbf{v_0}$] ->[bend left] 1[xshift=3cm, label=\Huge $\mathbf{v_1}$],
+                        0 ->[bend left] 2[label=\Huge $\mathbf{v_2}$],
+                        0 ->[bend left] 3[label=\Huge $\mathbf{v_3}$],
+                        0 ->[bend left] 4[label=\Huge $\mathbf{v_4}$],
+                        0 ->[bend left] 5[label=\Huge $\mathbf{v_5}$],
+                        0 ->[bend left] 6[label=\Huge $\mathbf{v_6}$],
                         1 ->[bend left] 0,
                         1 ->[bend left] 2,
                         1 ->[bend left] 3,

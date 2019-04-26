@@ -1,11 +1,7 @@
-\frametitle{Definitions}
-  \begin{itemize}
-    \item \emph{directions matrix} - an array of JSONs containing vertex and edge information. While not strictly a matrix, it supplies the information to populate a matrix of travel times. While a matrix is no longer used, it is a good mental image to have when thinking about the OpenHouseGraph.
-    \begin{figure}
-      \begin{lstlisting}
-        [{'_id': ObjectId('5cad42f3671c850b358ab86b'), 'url': REDACTED, 'dtstart': '20190414T153000Z', 'dtend': '20190414T170000Z', 'summary': REDACTED, 'description': REDACTED, 'location': {'geometry': {'x': x_0, 'y': y_0, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_0, 'Y': y_0, 'DisplayX': x_{d0}, 'DisplayY': y_{d0}, 'Xmin': x_{min0}, 'Xmax': x_{max0}, 'Ymin': y_{min0}, 'Ymax': y_{max0}, 'ExInfo': '', 'OBJECTID': 1}, 'address': REDACTED}, 'address_hash': sha1(location0), 'durations': [[1, 13.85]]}
-     {'_id': ObjectId('5cac003a671c85002d41afb9'), 'url': REDACTED, 'dtstart': '20190413T150000Z', 'dtend': '20190413T170000Z', 'summary': REDACTED 'description': 'REDACTED, 'location': {'geometry': {'x': x_1, 'y': y_1, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_1, 'Y': y_1, 'DisplayX': x_{d1}, 'DisplayY': y_{d1}, 'Xmin': x_{min1}, 'Xmax': x_{max1}, 'Ymin': y_{min1}, 'Ymax': y_{max1}, 'ExInfo': '', 'OBJECTID': 1}, 'address': REDACTED},, 'address_hash': sha1(location1), 'durations': [[0, 14.15]]}]
-      \end{lstlisting}
-      \caption{Simplified Directions Array (Matrix).}\label{sda}
-    \end{figure}
-  \end{itemize}
+\frametitle{Walkthrough}
+  \begin{figure}[!htb]
+    \begin{center}
+      \includestandalone[width=6.15cm]{../tikz/walkthrough/step_7}
+      \caption{Step 7 - 'ID': 4, 'end': 1080, 'start': 960}\label{seven-houses}
+    \end{center}
+  \end{figure}

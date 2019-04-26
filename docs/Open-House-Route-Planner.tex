@@ -356,7 +356,7 @@ I have been looking for houses. When I add open houses to my Google Calendar, I 
 \subsection{Objective}
 Given a series of open houses the application should find routes that will allow the user to visit the maximum number of open houses given the constraints of \emph{travel time} and \emph{when the open houses are open}.
 
-After phrasing stating the problem, the problem was divided up into several part:
+After stating the problem, it was divided up into several part:
 \begin{itemize}
   \item where the houses were with respect to each other,
   \item when the open houses were,
@@ -381,7 +381,7 @@ As with most projects, a bit of legwork is involved before even starting the mai
 As for the first three points, the following describe what kind of data the program accepts, its transformation, and how there data is cached.
 
 \subsubsection{Extraction}\label{E}
-Data extraction was performed manually as it seems that many realestate sites did not want to hand over data programatically; or if they did the purchase of an API key was required. The data used for this project was sourced from Trulia\cite{Trulia} in the form of ICS files\cite{ICS}.
+Data extraction was performed manually as it seems that many real estate sites did not want to hand over data programatically; or if they did the purchase of an API key was required. The data used for this project was sourced from Trulia\cite{Trulia} in the form of ICS files\cite{ICS}.
 
 \subsubsection{Transformation}\label{T}
 Open House data is typically provided with in a human readable format with an address written like ``100 Seymour Ave, Utica, NY 13502'' and times provided in the form "10AM to 12PM." These forms of data need to be handled somehow. Luckily, when downloading calendar data the time data comes in ISO 8601 Notation (\emph{\ie} yyyymmddThhmmssZ).
@@ -444,7 +444,7 @@ For the purposes of this and following sections refer to Figure \ref{ICS-Example
   \end{figure}
 
 % \subsection{Geocoding} \label{geocoding}
-Given a directory of $n$ ICS files (as per section \ref{E}) the data is parsed by the ICSParser (Appendix \ref{ICSParser}) and the address information is \emph{safely geocoded} (querying for existence in MongoDB, otherwise querying ArcGIS API for information) by MongoOps and a Flask REST endpoint (Appendices \ref{MongoOps} and \ref{Esri Flask App} respectively) \cite{Flask}. This process yeilds data like that shown in Figure \ref{location0_data}.
+Given a directory of $n$ ICS files (as per section \ref{E}) the data is parsed by the ICSParser (Appendix \ref{ICSParser}) and the address information is \emph{safely geocoded} (querying for existence in MongoDB, otherwise querying ArcGIS API for information) by MongoOps and a Flask REST endpoint (Appendices \ref{MongoOps} and \ref{Esri Flask App} respectively) \cite{Flask}. This process yields data like that shown in Figure \ref{location0_data}.
 \begin{figure}[!htb]
   \begin{center}
     \begin{lstlisting}
@@ -518,7 +518,7 @@ The \textsf{ID} of a given vertex (as seen in second loop of Figure \ref{last re
 
 The \textsf{Graph} constructor (see Appendix \ref{OpenHouseGraph}) takes this information and stores the edges as [[0, 1, 13.85], [1, 0, 14.15]], and stores the rest of the JSON as the vertex information. To help keep the explanation as general as possible, the following notation will be used:
 \begin{itemize}
-  \item vertices will be refered to as $v_i$,
+  \item vertices will be referred to as $v_i$,
   \item the start and stop time of open houses belong to a vertex will be denoted $t_{i0}$ and $t_{i1}$ respectively,
   \item edges from $v_i$ to $v_j$ will be denoted $e_{ij}$.
   \item values from edges $e_{ij}$ can be accessed as they would be in an array. \ie $e_{01}[2] = 13.85$ (Figure \ref{vertex edge relation}).
@@ -549,7 +549,7 @@ Now that we are at $v_i$ at time $T$ and having visited $V$, the \textsf{visit\_
       \item If the open house is \textbf{not closed}, we can tell the function that the arrival time is correct and does not need updating.
       \item If the open house is \textbf{closed} (or in the unlikely case that the time is in some other state), we can tell the function to set the arrival time to $-1$ ($T_a := -1$).
     \end{itemize}
-    \hspace*{0.5em} If $T_a > 0$, then then function is allowed to preceed.
+    \hspace*{0.5em} If $T_a > 0$, then then function is allowed to proceed.
   \item $v_j$ is added to a list of visited $V$ ($V := [\cdots , v_i, v_j]$, where $V$ previously equaled $[\cdots , v_i]$),
   \item finally, a recursive call is made to the \textsf{visit\_next} function to start the pattern all over again. Once no valid acyclic edges exist, 
     \begin{itemize}
@@ -578,17 +578,28 @@ The sheer number of results may seem intimidating, but it is a simple task a fin
 \chapter{Conclusions and Future Work}
 \section{Conclusions}
 \subsection{Reflection}
-In the beginning of this project, I wanted to use different higher level graph theory concepts to try to solve the problem of routing the user to different open houses, rather than via brute force. But becuase where the inspiration of this project originally came from, I was also looking for a house. I developed the methodology and the project into working states and used them to help find the house I recently moved into.
+In the beginning of this project, I wanted to use different higher level graph theory concepts to try to solve the problem of routing the user to different open houses, rather than via brute force. Though after some time I decided to get answers before trying to dive too deeply into what \textit{could} be done. After getting the methodology down, I worked out some scenarios by hand and went house hunting. After confirming that I could find a route (a route in which I found the house I now own), I proceeded to implement the program that is being presented here.
 
 The methodology of routing the user to house is fairly sound, though after nailing down the 30 minute stay as a default time to stay at a house, I asked my realtor how long people usually stayed at an open house and he said it was more like 10 - 15 minutes. A change to how much time the user would potentially stay at a house can be changed easily, but I did not concern myself too much with that because the core logic of the problem was completed and I figured assuming the user stayed a house longer than normal would allow for human error to occur throughout the day.
 
 \subsection{Justification}
-I would still like to look into using methods other than the brute force to solve this problem, but for routing a user to a small number of open houses it might not be necessary to do much more than brute forcing the problem. Given my price range and blindly choosing 10 houses from Central New York, the program barely took $0.5$ seconds to exhaust all routes one could take. 
+I would still like to look into using methods other than the brute force to solve this problem, but for routing a user to a small number of open houses it might not be necessary to do anything more than brute force. Open houses are usually open from about 10am until 5pm; $7$ hours. If travel time is elimatinated ($e_{ij} = 0, \forall i,j$) and one spends on average $30$ minutes at each house, then the max recursive depth of the \textsf{visit\_next} function is $14$. Additionally, an interview with David W. Jansing brought to my attention that with how bounded this particular problem is, more complex functions may potentially require more time to set up than brute force needs to run\cite{jansing_jansing_2019}.
 
-The graphs never got large enough to worry about other methods than brute force. Now that I am not using the program for my personal use in Central New York, I have requested an export of open house data in San Antonio, TX; as I know someone who has expressed interest in finding a home closer to their work. But even if Trulia responds and provides me with the export of data I requested, the nature of the problem binds how much can be done. If the program attempts to derive routes from open houses that open later in the day, those paths will terminate rather quickly. If there is a lot of traffic, like that which might exist in a large city, the driving directions will determine that one will not be able to visit certain open houses in a route together. Factors like these may make brute force viable, even with larger data sets.
+In an attempt to stress the program, I have requested an export of open house data in San Antonio, TX, but I foresee the traffic of a large city keeping the number potential routes low (many short routes may be returned, but will be ignored for larger ones).
 
 \section{Future Work}
-As I mentioned in my justification, even if brute force holds up against large data sets, I would like implement other methods of traversing the graph. I would also like to work on the ingestion of data. Currently, the program relies on the user providing specific file type (ICS files) in a the \textsf{/data} directory of a docker container. I do this by manually downloading ICS files from Trulia's website to a directory that I mount to the container; it is easy, but tedious. Lastly, I would love to enhance the feel for the program by supplying a front end that users could interact with and receive detailed information from; instead of a terminal output of the addresses in the order they should be visited.
+\hspace*{-2.5em} The future work of this project comes down to some of the stretch goals I provided myself:
+\begin{itemize}
+  \item implement other methods of traversing the graph,
+  \item provide a more user friendly way to ingest data,
+  \item and supply a front end that users could interact with and receive detailed information from.
+\end{itemize}
+
+\hspace*{-2.5em} Other things that may be worked on in the future are:
+\begin{itemize}
+  \item clean up the information stored in the database. Right now, if you do not clear the database from week to week and you query a house that was open previously, you will receive the hours of the last week.
+  \item And there is an issue with character encoding with the ICSParser. The issue was ignored during the scope of this project, but if this were to be serves up to a client, then it would not be good to just through out whatever is not understood.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                   STOP REMOVING HERE :-)                         %

@@ -385,7 +385,7 @@ That just leaves the address to be \emph{geocoded}; the process of converting ad
 To avoid having to query the ArcGIS API repeated and spending the credits that was required\cite{ArcGIS}, the data is stored in a MongoDB instance. This not only helps the program be more economically efficient, but cuts down on latency during testing and future delivery.
 
 \subsection{Infrastructure}
-Docker is a container platform that helps facilitate rapid prototyping, development, and compartmentalization of development of projects \cite{DOCKER}. Docker, and subsequently docker-compose\cite{DC}, was used on this project to set up network on systems that could easily be deployed on a cloud service. 
+Docker is a container platform that helps facilitate rapid prototyping, development, and compartmentalization of development of projects \cite{DOCKER}. Docker, and subsequently docker-compose\cite{DC}, was used on this project to set up a network of systems that could easily be deployed on a cloud service. 
 
 This docker-compose network consisted of three containers to query ArcGIS API, store geocoded data, and perform computation on graph data structure; esri, mongo, and routefinder, respectively (see Figure \ref{docker-compose-network-diagram} and Appendix \ref{docker-images}).
 \begin{figure}[!htb]

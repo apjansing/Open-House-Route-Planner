@@ -1,8 +1,8 @@
 \beamer@slide {directions matrix}{14}
 \beamer@slide {sda}{14}
 \beamer@slide {duration matrix}{15}
-\beamer@slide {Esri Flask App}{16}
 \beamer@slide {ICSParser}{16}
+\beamer@slide {Esri Flask App}{16}
 \beamer@slide {MongoOps}{16}
 \beamer@slide {short-ics}{20}
 \beamer@slide {short-ics}{21}
@@ -15,3 +15,6 @@
 \beamer@slide {seven-houses}{28}
 \beamer@slide {seven-houses}{29}
 \beamer@slide {seven-houses}{30}
+\beamer@slide {proposed-path}{31}
+\beamer@slide {proposed-path}{32}
+\beamer@slide {potential-paths}{32}

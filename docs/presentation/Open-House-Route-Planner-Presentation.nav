@@ -61,16 +61,24 @@
 \headcommand {\beamer@framepages {29}{29}}
 \headcommand {\slideentry {3}{2}{8}{30/30}{Walkthrough}{0}}
 \headcommand {\beamer@framepages {30}{30}}
-\headcommand {\beamer@sectionpages {20}{30}}
-\headcommand {\beamer@subsectionpages {23}{30}}
-\headcommand {\sectionentry {4}{Acknowledgements}{31}{Acknowledgements}{0}}
-\headcommand {\slideentry {4}{0}{1}{31/31}{}{0}}
+\headcommand {\slideentry {3}{2}{9}{31/31}{Walkthrough}{0}}
 \headcommand {\beamer@framepages {31}{31}}
-\headcommand {\beamer@sectionpages {31}{31}}
-\headcommand {\beamer@subsectionpages {31}{31}}
-\headcommand {\sectionentry {5}{Bibliography}{32}{Bibliography}{0}}
-\headcommand {\beamer@partpages {1}{33}}
-\headcommand {\beamer@subsectionpages {32}{33}}
-\headcommand {\beamer@sectionpages {32}{33}}
-\headcommand {\beamer@documentpages {33}}
-\headcommand {\gdef \inserttotalframenumber {22}}
+\headcommand {\beamer@subsectionpages {23}{31}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{32}{Other Paths}}
+\headcommand {\slideentry {3}{3}{1}{32/32}{Other Paths}{0}}
+\headcommand {\beamer@framepages {32}{32}}
+\headcommand {\beamer@sectionpages {20}{32}}
+\headcommand {\beamer@subsectionpages {32}{32}}
+\headcommand {\sectionentry {4}{Acknowledgements}{33}{Acknowledgements}{0}}
+\headcommand {\slideentry {4}{0}{1}{33/33}{}{0}}
+\headcommand {\beamer@framepages {33}{33}}
+\headcommand {\slideentry {4}{0}{2}{34/34}{}{0}}
+\headcommand {\beamer@framepages {34}{34}}
+\headcommand {\beamer@sectionpages {33}{34}}
+\headcommand {\beamer@subsectionpages {33}{34}}
+\headcommand {\sectionentry {5}{Bibliography}{35}{Bibliography}{0}}
+\headcommand {\beamer@partpages {1}{36}}
+\headcommand {\beamer@subsectionpages {35}{36}}
+\headcommand {\beamer@sectionpages {35}{36}}
+\headcommand {\beamer@documentpages {36}}
+\headcommand {\gdef \inserttotalframenumber {25}}

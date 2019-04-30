@@ -1,7 +1,21 @@
-\frametitle{Walkthrough}
-  \begin{figure}[!htb]
-    \begin{center}
-      \includestandalone[width=6.15cm]{../tikz/walkthrough/step_7}
-      \caption{Step 7 - 'ID': 4, 'end': 1080, 'start': 960}\label{seven-houses}
-    \end{center}
+\frametitle{Other Paths}
+  \begin{figure}
+    \begin{lstlisting}
+      [{'ID': 0, 'address': location0 (Clinton), 'end': 810, 'start': 720},
+      {'ID': 1, 'address': location1 (Utica), 'end': 900, 'start': 810},
+      {'ID': 2, 'address': location2 (New Hartford), 'end': 870, 'start': 720},
+      {'ID': 3, 'address': location3 (New Hartford), 'end': 780, 'start': 690},
+      {'ID': 4, 'address': location4 (Sherrill), 'end': 1080, 'start': 960},
+      {'ID': 5, 'address': location5 (Morrisville), 'end': 720, 'start': 600},
+      {'ID': 6, 'address': location6 (Oneida), 'end': 720, 'start': 600}]
+    \end{lstlisting}
+    \caption{Locations and Times.}\label{proposed-path}
+  \end{figure}
+  \begin{figure}
+    \begin{lstlisting}
+      [[5, 6, 0, 3, 1, 2, 4], [5, 6, 0, 3, 2, 1, 4], [5, 6, 2, 3, 0, 1, 4],
+      [5, 6, 3, 0, 1, 2, 4], [5, 6, 3, 2, 0, 1, 4], [6, 5, 0, 3, 1, 2, 4], [6, 5, 0, 3, 2, 1, 4],
+      [6, 5, 2, 3, 0, 1, 4], [6, 5, 3, 0, 1, 2, 4], [6, 5, 3, 0, 2, 1, 4], [6, 5, 3, 2, 0, 1, 4]]
+    \end{lstlisting}
+    \caption{Potential Paths.}\label{potential-paths}
   \end{figure}

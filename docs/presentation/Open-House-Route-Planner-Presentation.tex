@@ -213,28 +213,28 @@
     \item[Transform] -
     \begin{itemize}
       \item The ICSParser (see slide \ref{ICSParser}) parsed ICS files to JSONs that python could handle.
-      \item The directions matrix (see slide \ref{directions matrix}) were used to manipulate the data into a form that would be useful for the OpenHouseGraph.
-      \item And the Esri Flask App (see slide \ref{Esri Flask App}) gathered data from the Esri Developer API to geocode addresses to locations and fetched directions between two points so we could see how long it would take to travel between houses.
+      \item The Esri Flask App (see slide \ref{Esri Flask App}) gathered data from the Esri Developer API to geocode addresses to locations and fetched directions between two points so we could see how long it would take to travel between houses.
+      \item And the directions matrix (see slide \ref{directions matrix}) were used to manipulate the data into a form that would be useful for the OpenHouseGraph.
     \end{itemize} \pause
     \item[Load] - MongoOps (see slide \ref{MongoOps}) performed several roles:
       \begin{itemize}
         \item querying for existence of geocoded addresses and directions,
         \item storing data in a MongoDB instance,
         \item fetching data from a MongoDB instance,
-        \item and requesting information from the Esri Flask App if the data did not exists in its database.
+        \item and requesting information from the Esri Flask App if the data did not exist in its database.
       \end{itemize}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Infrastructure}
-  And all of this had to be supported by an underlying infrastructure.\pause \\ 
+  All of this had to be supported by an underlying infrastructure.\pause \\ 
   For this, I used docker-compose \cite{DC}.\\
   My docker-compose network consisted of three containers:
   \begin{itemize}
     \item esri \cite{img-esri},
     \item mongo \cite{img-mongo},
-    \item and routefinder \cite{img-pyspark},
+    \item and routefinder \cite{img-pyspark}.
   \end{itemize}
   The docker-compose.yml can found \MYhref{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/docker-compose.yml}{here}.
 \end{frame}
@@ -245,7 +245,7 @@
 \begin{frame}
   \frametitle{Definitions}
   \begin{itemize}
-    \item \emph{Safely Query} - querying for existence in MongoDB before querying ArcGIS API for information. This applies to both \emph{geocoding} an address its coordinates on the planet and to gather the directions from one point to another. \pause
+    \item \emph{Safely Query} - to query for existence in MongoDB before querying ArcGIS API for information. This applies to both \emph{geocoding} an address its coordinates on the planet and to gather the directions from one point to another. \pause
     \item geocoding - the process or converting addresses to coordinates on the globe.
   \end{itemize}
 \end{frame}
@@ -253,7 +253,7 @@
 \begin{frame}[fragile]
   \frametitle{Definitions}
   \begin{itemize}
-    \item \emph{directions matrix}\label{directions matrix} - an array of JSONs containing vertex and edge information. While not strictly a matrix, it supplies the information to populate a matrix of travel times. While a matrix is no longer used, it is a good mental image to have when thinking about the OpenHouseGraph.
+    \item \emph{directions matrix}\label{directions matrix} - an array of JSONs containing vertex and edge information. While not strictly a matrix, it supplies the information to populate a matrix of travel times. It is a good mental image to have when thinking about the OpenHouseGraph.
     \begin{figure}
       \begin{lstlisting}
         [{'_id': ObjectId('5cad42f3671c850b358ab86b'), 'url': REDACTED, 'dtstart': '20190414T153000Z', 'dtend': '20190414T170000Z', 'summary': REDACTED, 'description': REDACTED, 'location': {'geometry': {'x': x_0, 'y': y_0, 'spatialReference': {'wkid': 4326, 'latestWkid': 4326}}, 'attributes': {'Loc_name': 'World', 'Status': 'M', 'Score': 100, ... 'X': x_0, 'Y': y_0, 'DisplayX': x_{d0}, 'DisplayY': y_{d0}, 'Xmin': x_{min0}, 'Xmax': x_{max0}, 'Ymin': y_{min0}, 'Ymax': y_{max0}, 'ExInfo': '', 'OBJECTID': 1}, 'address': REDACTED}, 'address_hash': sha1(location0), 'durations': [[1, 13.85]]}
@@ -269,7 +269,7 @@
   \begin{itemize}
     \item \emph{directions matrix} - an array of JSONs containing vertex and edge information. While not strictly a matrix, it supplies the information to populate a matrix of travel times. While a matrix is no longer used, it is a good mental image to have when thinking about the OpenHouseGraph.
     \begin{itemize}
-      \item Figure \ref{duration matrix} is an implied matrix of travel times between locations from Figure \ref{sda}. $t_{i,j}$ is the travel time between house $i$ and house $j$. The travel time from house $i$ to house $i$ is given the value $-1$ as a guard against reflexive traveling.
+      \item Figure \ref{duration matrix} is an implied matrix of travel times between locations from Figure \ref{sda}. Where $t_{i,j}$ is the travel time between house $i$ and house $j$. The travel time from house $i$ to house $i$ is given the value $-1$ as a guard against reflexive traveling.
       \begin{figure}
         $$
         \left(
@@ -290,8 +290,8 @@
 \begin{frame}
   \frametitle{Definitions}
   \begin{itemize}
-    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/esri/esri_flask.py}{Esri Flask App}\label{Esri Flask App} - REST endpoint that is designed to accept information from MongoOps and query the ArcGIS Developer API for geocoded address information or directions between two geometry points.
-    \pause\item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/ICSParser.py}{ICSParser}\label{ICSParser} - Class for parsing ICS files to JSON to be geocoded.
+    \item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/ICSParser.py}{ICSParser}\label{ICSParser} - Class for parsing ICS files to JSON to be geocoded.
+    \pause\item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/esri/esri_flask.py}{Esri Flask App}\label{Esri Flask App} - REST endpoint that is designed to accept information from MongoOps and query the ArcGIS Developer API for geocoded address information or directions between two geometry points.
     \pause\item \href{https://github.com/apjansing/Open-House-Route-Planner/blob/master/backend/docker/persistence/pyspark/MongoOps.py}{MongoOps}\label{MongoOps} - Class for:
         \begin{itemize}
           \item loading data to database, 
@@ -354,7 +354,7 @@
       \end{lstlisting}
     \end{multicols}
   \end{minipage}
-    \caption{Shortend ICS files.}\label{short-ics}
+    \caption{Shortened ICS files.}\label{short-ics}
   \end{figure}
 \end{frame}
 
@@ -384,7 +384,7 @@
   'edges': [[0, 25.42],[1, 35.35],[2, 26.93],[3, 28.53],[4, 8.9],[5, 15.26]],
   'end': 720, 'start': 600}]
     \end{lstlisting}
-    \caption{Shortend Parsed ICS files.}\label{short-ics}
+    \caption{Shortened Parsed ICS files.}\label{short-ics}
   \end{figure}
 \end{frame}
 
@@ -474,14 +474,73 @@
 \end{frame}
 
 
+\begin{frame}[fragile]
+  \frametitle{Proposed Path}
+  \begin{figure}
+    \begin{lstlisting}
+  [{'ID': 5, 'address': location5 (Morrisville),
+    'edges': [[0, 32.63], [1, 42.56], [2, 34.11], [3, 35.71], [4, 16.2], [6, 14.71]],
+    'end': 720, 'start': 600},
+  {'ID': 6, 'address': location6 (Oneida),
+    'edges': [[0, 25.42],[1, 35.35],[2, 26.93],[3, 28.53],[4, 8.9],[5, 15.26]],
+    'end': 720, 'start': 600},
+  {'ID': 0, 'address': location0 (Clinton),
+  'edges': [[1, 14.88], [2, 7.42], [3, 8.51], [4, 21.55], [5, 31.54], [6, 25.19]],
+  'end': 810, 'start': 720},
+  {'ID': 3, 'address': location3 (New Hartford),
+   'edges': [[0, 10.03], [1, 8.88], [2, 3.36], [4, 26.72], [5, 36.22], [6, 29.85]],
+   'end': 780, 'start': 690},
+ {'ID': 1, 'address': location1 (Utica),
+  'edges': [[0, 15.47], [2, 8.54], [3, 7.85], [4, 31.88], [5, 42.08], [6, 35.73]],
+  'end': 900, 'start': 810},
+ {'ID': 2, 'address': location2 (New Hartford),
+  'edges': [[0, 8.15], [1, 8.34], [3, 2.05], [4, 24.24], [5, 33.74], [6, 27.41]],
+  'end': 870, 'start': 720},
+ {'ID': 4, 'address': location4 (Sherrill),
+  'edges': [[0, 21.93], [1, 31.39], [2, 23.43], [3, 25.09], [5, 15.65], [6, 9.24]],
+  'end': 1080, 'start': 960}]
+    \end{lstlisting}
+    \caption{Proposed Path.}\label{proposed-path}
+  \end{figure}
+\end{frame}
+
+\subsection{Other Paths}
+\begin{frame}[fragile]
+  \frametitle{Other Paths}
+  \begin{figure}
+    \begin{lstlisting}
+      [{'ID': 0, 'address': location0 (Clinton), 'end': 810, 'start': 720},
+      {'ID': 1, 'address': location1 (Utica), 'end': 900, 'start': 810},
+      {'ID': 2, 'address': location2 (New Hartford), 'end': 870, 'start': 720},
+      {'ID': 3, 'address': location3 (New Hartford), 'end': 780, 'start': 690},
+      {'ID': 4, 'address': location4 (Sherrill), 'end': 1080, 'start': 960},
+      {'ID': 5, 'address': location5 (Morrisville), 'end': 720, 'start': 600},
+      {'ID': 6, 'address': location6 (Oneida), 'end': 720, 'start': 600}]
+    \end{lstlisting}
+    \caption{Locations and Times.}\label{proposed-path}
+  \end{figure}
+  \begin{figure}
+    \begin{lstlisting}
+      [[5, 6, 0, 3, 1, 2, 4], [5, 6, 0, 3, 2, 1, 4], [5, 6, 2, 3, 0, 1, 4],
+      [5, 6, 3, 0, 1, 2, 4], [5, 6, 3, 2, 0, 1, 4], [6, 5, 0, 3, 1, 2, 4], [6, 5, 0, 3, 2, 1, 4],
+      [6, 5, 2, 3, 0, 1, 4], [6, 5, 3, 0, 1, 2, 4], [6, 5, 3, 0, 2, 1, 4], [6, 5, 3, 2, 0, 1, 4]]
+    \end{lstlisting}
+    \caption{Potential Paths.}\label{potential-paths}
+  \end{figure}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%Acknowledgements%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgements}
-\begin{frame}{Acknowledgements}
-  This work is dedicated to my parents. Without their guidance, I would not be the person I am today. I joined the United States Air Force after their suggestion, where I gained a greater appreciation for my education and the opportunities afforded to me.
+\begin{frame}{Questions}
+  \centering \Huge Questions?
+\end{frame}
 
-  I would like to thank each of my committee members: 
+\begin{frame}{Acknowledgements}
+  This work is dedicated to my parents. Without their guidance, I would not be the person I am today. I joined the United States Air Force at their suggestion, where I gained a greater appreciation for my education and the opportunities afforded to me.
+
+  I would like to thank each of my committee members: Doctors Bruno Andriamanalimanana, Roger Cavallo, and Jorge Novillo.
   
   Gerard Aiken supplied the Esri ArcGIS Developer credits required to do this work.
   
@@ -489,6 +548,7 @@
   
   This work was funded by Booz Allen Hamilton tuition assistance program.
 \end{frame}
+
 
 \section{Bibliography}
 % \begin{frame}

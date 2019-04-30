@@ -349,7 +349,7 @@ I have been looking for houses. When I add open houses to my Google Calendar, I 
 \subsection{Objective}
 Given a series of open houses the application should find routes that will allow the user to visit the maximum number of open houses given the constraints of \emph{travel time} and \emph{when the open houses are open}.
 
-After stating the problem, it was divided up into several part:
+After stating the problem, it was divided up into several parts:
 \begin{itemize}
   \item where the houses were with respect to each other,
   \item when the open houses were,
@@ -365,24 +365,24 @@ As with most projects, a bit of legwork is involved before even starting the mai
 \begin{itemize}
   \item what kind of data the system will accept,
   \item what kind of ETL (Extraction, Transformation, and Loading) processes will need to occur,
-  \item if/how there data will be cached,
+  \item if/how the data will be cached,
   \item what infrastructure can we set up to support these requirements,
   \item and how might we will we compute routes?
 \end{itemize}
 
 \subsection{ETL}
-As for the first three points, the following describe what kind of data the program accepts, its transformation, and how there data is cached.
+As for the first three points, the following describe what kind of data the program accepts, its transformation, and how the data is cached.
 
 \subsubsection{Extraction}\label{E}
 Data extraction was performed manually as it seems that many real estate sites did not want to hand over data programatically; or if they did the purchase of an API key was required. The data used for this project was sourced from Trulia\cite{Trulia} in the form of ICS files\cite{ICS}.
 
 \subsubsection{Transformation}\label{T}
-Open House data is typically provided with in a human readable format with an address written like ``100 Seymour Ave, Utica, NY 13502'' and times provided in the form "10AM to 12PM." These forms of data need to be handled somehow. Luckily, when downloading calendar data the time data comes in ISO 8601 Notation (\emph{\ie} yyyymmddThhmmssZ).
+Open House data is typically provided in a human readable format with an address written like ``100 Seymour Ave, Utica, NY 13502'' and times provided in the form "10AM to 12PM." These forms of data need to be handled somehow. Luckily, when downloading calendar data the time data comes in ISO 8601 Notation (\emph{\ie} yyyymmddThhmmssZ).
 
 That just leaves the address to be \emph{geocoded}; the process of converting addresses to a coordinate system. The ArcGIS Developer API provides an easy way to geocode address data. This process will be described in the section \ref{preprocessing} along with all the other transformations required to consistently gather and use data.
  
 \subsubsection{Loading}\label{L}
-To avoid having to query the ArcGIS API repeated and spending the credits that was required\cite{ArcGIS}, the data is stored in a MongoDB instance. This not only helps the program be more economically efficient, but cuts down on latency during testing and future delivery.
+To avoid having to query the ArcGIS API repeatedly and spending the credits that was required\cite{ArcGIS}, the data is stored in a MongoDB instance. This not only helps the program be more economically efficient, but cuts down on latency during testing and future delivery.
 
 \subsection{Infrastructure}
 Docker is a container platform that helps facilitate rapid prototyping, development, and compartmentalization of development of projects \cite{DOCKER}. Docker, and subsequently docker-compose\cite{DC}, was used on this project to set up a network of systems that could easily be deployed on a cloud service. 
@@ -457,11 +457,11 @@ Given a directory of $n$ ICS files (as per section \ref{E}) the data is parsed b
   \end{center}
 \end{figure}
 
-Gathering directions between locations follows a similar pattern. After the ICS files have been parsed into data that looks like Figure \ref{location0_data}, the same Flask app has another REST endpoint to accept two locations and return the directions, along with estimated durations as each step (see Figure \ref{location0_location1_directions}). At every point, when data has been geocoded (i.e. Figures \ref{location0_data} and \ref{location0_location1_directions}) that data is saved in an easily retrievable fashion via unique constructable hashes based on the location(s)' address(es)'s.
+Gathering directions between locations follows a similar pattern. After the ICS files have been parsed into data that looks like Figure \ref{location0_data}, the same Flask app has another REST endpoint to accept two locations and return the directions, along with estimated durations at each step (see Figure \ref{location0_location1_directions}). At every point, when data has been geocoded (i.e. Figures \ref{location0_data} and \ref{location0_location1_directions}) that data is saved in an easily retrievable fashion via unique constructable hashes based on the location(s)'s address(es).
 
 \section{Creating A Graph}
 \subsection{Directions Matrix}
-Once the ICS files have been processed, a \emph{direction matrix} is created. First, a verbose matrix is created by taking the addresses from the ICS files and querying the database for all $n \choose 2$ combinations of $\textsc{SHA-1}\left(\textsc{concat}\left(location_i, location_j\right)\right)$, where $0 <= i < j <= n-1$. Each entry of this matrix would look like that of Figure \ref{location0_location1_directions} and that is why a simplified form of the matrix is listed along side this matrix in the DirectionMatrix class (Appendix \ref{DirectionsMatrix}).
+Once the ICS files have been processed, a \emph{direction matrix} is created. First, a verbose matrix is created by taking the addresses from the ICS files and querying the database for all $n \choose 2$ combinations of $\textsc{SHA-1}\left(\textsc{concat}\left(location_i, location_j\right)\right)$, where $0 \leq i < j \leq n-1$. Each entry of this matrix would look like that of Figure \ref{location0_location1_directions} and that is why a simplified form of the matrix is listed alongside this matrix in the DirectionMatrix class (Appendix \ref{DirectionsMatrix}).
 
 This verbose directions matrix is entirely usable, but would require the code also be verbose when gathering the travel time when constructing the graph and assigning edge weights. Hence, a simplified matrix that looks like Figure \ref{simplified directions array} is created as a refinement of the original data.
 
@@ -474,7 +474,7 @@ This verbose directions matrix is entirely usable, but would require the code al
 \end{figure}
 
  \subsection{Open House Graph}
- With the directions matrix derived, a graph can now be constructed and routes can be discovered that direct users to a maximum number of houses. Looking at Figure \ref{simplified directions array} we can see that edge data has been defined by the \textsf{durations} key-value pairing, the start and stop times are included; all that is left is to do one last transformation to what the graph expects and create the graph (Figure \ref{last refinement}).
+ With the directions matrix derived, a graph can now be constructed and routes can be discovered that direct users to a maximum number of houses. Looking at Figure \ref{simplified directions array} we can see that edge data has been defined by the \textsf{durations} key-value pairing with the start and stop times included. All that is left is to do one last transformation to what the graph expects and create the graph (Figure \ref{last refinement}).
  \begin{figure}[!htb]
    \begin{lstlisting}
 for i in range(len(sdm)):
@@ -500,7 +500,7 @@ ohg = OpenHouseGraph(vertices)
    \caption{Last Refinement and Graph Construction.}\label{last refinement}
   \end{figure}
 
-The \textsf{ID} of a given vertex (as seen in second loop of Figure \ref{last refinement}), corresponds to the $0^{th}$ index of an \textsf{edge} (\textsf{durations} in the directions matrix). So that data from Figure \ref{simplified directions array} will looks like Figure \ref{vertex edge relation}, meaning that it will take $13.85$ minutes travel from the house $0$ to house $1$, and $14.15$ in the other direction.
+The \textsf{ID} of a given vertex (as seen in second loop of Figure \ref{last refinement}) corresponds to the $0^{th}$ index of an \textsf{edge} (\textsf{durations} in the directions matrix). The data from Figure \ref{simplified directions array} will look like Figure \ref{vertex edge relation}, meaning that it will take $13.85$ minutes travel from the house $0$ to house $1$, and $14.15$ minutes in the other direction.
 \begin{figure}[!htb]
   \begin{lstlisting}
     [{'ID': 0 'durations': [[1, 13.85]], ...}, 
@@ -509,19 +509,19 @@ The \textsf{ID} of a given vertex (as seen in second loop of Figure \ref{last re
   \caption{Vertex-Edge Relation.}\label{vertex edge relation}
 \end{figure}
 
-The \textsf{Graph} constructor (see Appendix \ref{OpenHouseGraph}) takes this information and stores the edges as [[0, 1, 13.85], [1, 0, 14.15]], and stores the rest of the JSON as the vertex information. To help keep the explanation as general as possible, the following notation will be used:
+The \textsf{Graph} constructor (see Appendix \ref{OpenHouseGraph}) takes this information, stores the edges as [[0, 1, 13.85], [1, 0, 14.15]], and stores the rest of the JSON as the vertex information. To help keep the explanation as general as possible, the following notation will be used:
 \begin{itemize}
   \item vertices will be referred to as $v_i$,
-  \item the start and stop time of open houses belong to a vertex will be denoted $t_{i0}$ and $t_{i1}$ respectively,
-  \item edges from $v_i$ to $v_j$ will be denoted $e_{ij}$.
-  \item values from edges $e_{ij}$ can be accessed as they would be in an array. \ie $e_{01}[2] = 13.85$ (Figure \ref{vertex edge relation}).
+  \item the start and stop time of open houses belonging to a vertex will be denoted $t_{i0}$ and $t_{i1}$ respectively,
+  \item edges from $v_i$ to $v_j$ will be denoted $e_{ij}$,
+  \item and values from edges $e_{ij}$ can be accessed as they would be in an array, \ie $e_{01}[2] = 13.85$ (Figure \ref{vertex edge relation}).
 \end{itemize}
 
-Figure \ref{last refinement} shows some shorthand that I wanted to use. Instead of working with a built in time API, I assumed that the day did not matter. All that needed to work with time was to convert the time to a base-10 numbering system (minutes since midnight), This allows computation in the graph to use duration in minutes returned by the ArcGIS API, and just keep a running tally of the time (scoped to a recursive function call) when figuring out when one would arrive at a given house.
+Figure \ref{last refinement} shows some shorthand that I wanted to use. Instead of working with a built in time API, I assumed that the day and time zones did not matter for a minimum viable product. I decided that all I needed to do to work with time was to convert the time to a base-10 numbering system (minutes since midnight). This was spur of the moment decision that could be easily swapped with time in milliseconds but does take up less room than a \emph{long}.
  
 \subsection{Finding Routes}
 \subsubsection{Starting Vertices}
-To start the search of paths, a for-loop is used to select starting vertices to enter the graph on. The program is written such that when we arrive at the first vertex, $v_i$, that the we arrive as soon as the open house starts, $t_{i0}$. $t_{i0}$ will be used as the initializing value for a time tracking variable, $T$, and $v_i$ is used to start the current paths' set of visited locations, $V$, and will later populate the $trip$ variables that contains the possible trips given the arbitrary starting point $v_i$.
+To start the search of paths, a for-loop is used to select starting vertices to enter the graph on. The program is written such that when we arrive at the first vertex, $v_i$, we arrive as soon as the open house starts, $t_{i0}$. $t_{i0}$ will be used as the initializing value for a time tracking variable, $T$, and $v_i$ is used to start the current paths' set of visited locations, $V$, which will later populate the $trip$ variables that contain the possible trips given the arbitrary starting point $v_i$.
 \begin{figure}[!htb]
   \begin{center}
       \includestandalone[width=10cm]{tikz/trivial-graph}
@@ -530,19 +530,13 @@ To start the search of paths, a for-loop is used to select starting vertices to 
 \end{figure}
 
 \subsubsection{Discoving Routes}
-Now that we are at $v_i$ at time $T$ and having visited $V$, the \textsf{visit\_next} function in \textsf{OpenHouseGraph} follows this pattern
+Now that we are at $v_i$ at time $T$ and having visited $V$, the \textsf{visit\_next} function in \textsf{OpenHouseGraph} follows this pattern:
 \begin{enumerate}
   \item Gather acyclic edges and iterate on them,
   \item spend 30 minutes (default value) at the current house and assign that to a departure time variable ($T_d := T + 30$),
-  \item determine the what the arrival time at $v_j$ would be and assign that to an arrival time variable ($T_a := T_d + e_{ij}[2]$),
-  \item determine if the open house has opened and determine if it has closed,\\
-  \hspace*{0.5em} Determining both values allows us to perform additional checks on the time.
-    \begin{itemize}
-      \item If the open house has \textbf{not opened}, we can tell the function to set the arrival time to the start of the open house ($T_a := t_{j0}$).
-      \item If the open house is \textbf{not closed}, we can tell the function that the arrival time is correct and does not need updating.
-      \item If the open house is \textbf{closed} (or in the unlikely case that the time is in some other state), we can tell the function to set the arrival time to $-1$ ($T_a := -1$).
-    \end{itemize}
-    \hspace*{0.5em} If $T_a > 0$, then then function is allowed to proceed.
+  \item determine what the arrival time at $v_j$ would be and assign that to an arrival time variable ($T_a := T_d + e_{ij}[2]$),
+  \item determine if the open house has opened and determine if it has closed.\\
+  Determining both values allows us to perform additional checks on the time. If the open house has \textbf{not opened}, we can tell the function to set the arrival time to the start of the open house ($T_a := t_{j0}$). If the open house is \textbf{not closed}, we can tell the function that the arrival time is correct and does not need updating. If the open house is \textbf{closed} (or in the unlikely case that the time is in some other state), we can tell the function to set the arrival time to $-1$ ($T_a := -1$). If $T_a > 0$, then then function is allowed to proceed.
   \item $v_j$ is added to a list of visited $V$ ($V := [\cdots , v_i, v_j]$, where $V$ previously equaled $[\cdots , v_i]$),
   \item finally, a recursive call is made to the \textsf{visit\_next} function to start the pattern all over again. Once no valid acyclic edges exist, 
     \begin{itemize}
@@ -566,19 +560,19 @@ It is at this point where I called my development to a halt. With our trivial ca
   \caption{Simulated results of graph of seven vertices.}\label{seven-houses-results}
 \end{figure}
 
-The sheer number of results may seem intimidating, but it is a simple task a finding the max length of the trips and then displaying a trimmed down version. In the sample results of Figure \ref{seven-houses-results}, we can see that it is possible to visit all seven houses in a couple of different ways. This will not always be the case because of the limitations of travel and when the houses are open to the public. I tried to stress the system with $10$ open houses and the program always completes its task in less than $0.6$ seconds.
+The sheer number of results may seem intimidating, but it is a simple task of finding the max length of the trips and then displaying a trimmed down version. In the sample results of Figure \ref{seven-houses-results}, we can see that it is possible to visit all seven houses in a couple of different ways. This will not always be the case because of the limitations of travel and when the houses are open to the public. I tried to stress the system with $10$ open houses and the program always completes its task in less than $0.6$ seconds.
 
 \chapter{Conclusions and Future Work}
 \section{Conclusions}
 \subsection{Reflection}
-In the beginning of this project, I wanted to use different higher level graph theory concepts to try to solve the problem of routing the user to different open houses, rather than via brute force. Though after some time I decided to get answers before trying to dive too deeply into what \textit{could} be done. After getting the methodology down, I worked out some scenarios by hand and went house hunting. After confirming that I could find a route (a route in which I found the house I now own), I proceeded to implement the program that is being presented here.
+In the beginning of this project, I wanted to use different higher level graph theory concepts to try to solve the problem of routing the user to different open houses rather than via brute force. After some time I decided to get answers before trying to dive too deeply into what \textit{could} be done. After getting the methodology down, I worked out some scenarios by hand and went house hunting. After confirming that I could find a route (a route in which I found the house I now own), I proceeded to implement the program that is being presented here.
 
-The methodology of routing the user to house is fairly sound, though after nailing down the 30 minute stay as a default time to stay at a house, I asked my realtor how long people usually stayed at an open house and he said it was more like 10 - 15 minutes. A change to how much time the user would potentially stay at a house can be changed easily, but I did not concern myself too much with that because the core logic of the problem was completed and I figured assuming the user stayed a house longer than normal would allow for human error to occur throughout the day.
+The methodology of routing the user to house is fairly sound, though after nailing down the 30 minute stay as a default time to stay at a house, I asked my realtor how long people usually stayed at an open house. He said it was more like 10 - 15 minutes. A change to how much time the user would potentially stay at a house can be made easily, but I did not concern myself too much with that because the core logic of the problem was completed and I figured assuming the user stayed a house longer than normal would allow for human error to occur throughout the day.
 
 \subsection{Justification}
-I would still like to look into using methods other than the brute force to solve this problem, but for routing a user to a small number of open houses it might not be necessary to do anything more than brute force. Open houses are usually open from about 10am until 5pm; $7$ hours. If travel time is elimatinated ($e_{ij} = 0, \forall i,j$) and one spends on average $30$ minutes at each house, then the max recursive depth of the \textsf{visit\_next} function is $14$. Additionally, an interview with David W. Jansing brought to my attention that with how bounded this particular problem is, more complex functions may potentially require more time to set up than brute force needs to run\cite{jansing_jansing_2019}.
+I would still like to look into using methods other than brute force to solve this problem, but for routing a user to a small number of open houses it might not be necessary to do anything more than brute force. Open houses are usually open from about 10am until 5pm ($7$ hours). If travel time is elimatinated ($e_{ij} = 0, \forall i,j$) and one spends on average $30$ minutes at each house, then the max recursive depth of the \textsf{visit\_next} function is $14$. Additionally, an interview with David W. Jansing brought to my attention that with how bounded this particular problem is, more complex functions may potentially require more time to set up than brute force needs to run\cite{jansing_jansing_2019}.
 
-In an attempt to stress the program, I have requested an export of open house data in San Antonio, TX, but I foresee the traffic of a large city keeping the number potential routes low (many short routes may be returned, but will be ignored for larger ones).
+In an attempt to stress the program, I have requested an export of open house data in San Antonio, TX, but I foresee the traffic of a large city keeping the number potential routes low. Many short routes may be returned, but will be ignored for larger ones.
 
 \section{Future Work}
 \hspace*{-2.5em} The future work of this project comes down to some of the stretch goals I provided myself:
@@ -591,7 +585,7 @@ In an attempt to stress the program, I have requested an export of open house da
 \hspace*{-2.5em} Other things that may be worked on in the future are:
 \begin{itemize}
   \item clean up the information stored in the database. Right now, if you do not clear the database from week to week and you query a house that was open previously, you will receive the hours of the last week.
-  \item And there is an issue with character encoding with the ICSParser. The issue was ignored during the scope of this project, but if this were to be serves up to a client, then it would not be good to just through out whatever is not understood.
+  \item There is an issue with character encoding with the ICSParser. The issue was ignored during the scope of this project, but if this were to be served up to a client then it would not be good to just throw out whatever is not understood.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
